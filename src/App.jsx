@@ -273,7 +273,13 @@ export default function App() {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <MobileNav activeTab={activeTab} setActiveTab={setActiveTab} lang={lang} />
+      <MobileNav 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        lang={lang} 
+        setLang={setLang}
+        deficiencyCount={deficiencyCount}
+      />
     </div>
   )
 }
