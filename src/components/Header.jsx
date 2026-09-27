@@ -84,18 +84,21 @@ export default function Header({
             >
               <Languages size={15} />
               <span className="pill-label">
-                {lang === 'en' ? 'EN' : lang === 'hi' ? 'हिं' : lang === 'santhali' ? 'ᱥᱟᱱ' : 'गों'}
+                {lang === 'en' ? 'EN' : lang === 'hi' ? 'हिं' : lang === 'santhali' ? 'ᱥᱟᱱ' : lang === 'gondi' ? 'गों' : lang === 'ho' ? 'ᱦᱳ' : lang === 'bodo' ? 'बड़ो' : 'କୁଇ'}
               </span>
               <ChevronDown size={13} className={showLangMenu ? 'arrow-flipped' : ''} />
             </button>
 
             {showLangMenu && (
-              <div className="dropdown-panel lang-panel fade-in">
+              <div className="dropdown-panel lang-panel fade-in" style={{ maxHeight: '350px', overflowY: 'auto' }}>
                 {[
                   { code: 'en', label: 'English', sub: 'Official Portal Language' },
-                  { code: 'hi', label: 'हिंदी (Hindi)', sub: 'राजभाषा' },
-                  { code: 'santhali', label: 'ᱥᱟᱱᱛᱟᱲᱤ (Santhali)', sub: 'Ol Chiki Script' },
-                  { code: 'gondi', label: 'गोंडी (Gondi)', sub: 'Central Tribal Dialect' }
+                  { code: 'hi', label: 'हिंदी (Hindi)', sub: 'राजभाषा / Northern ST' },
+                  { code: 'santhali', label: 'ᱥᱟᱱᱛᱟᱲᱤ (Santhali)', sub: 'Ol Chiki Script (JH, OD, WB)' },
+                  { code: 'gondi', label: 'गोंडी (Gondi)', sub: 'Central Tribal Region (MP, CG, TS)' },
+                  { code: 'ho', label: 'ᱦᱳ (Ho)', sub: 'Warang Chiti / Kolhan Region' },
+                  { code: 'bodo', label: 'बड़ो (Bodo)', sub: 'Northeast Tribal (Assam)' },
+                  { code: 'kui', label: 'କୁଇ (Kui)', sub: 'Kandha Tribal Community (Odisha)' }
                 ].map(l => (
                   <div 
                     key={l.code}
