@@ -5,10 +5,16 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import fs from 'fs'
 import { connectDB } from './data/database.js'
 import apiRouter from './routes/api.js'
 
 dotenv.config()
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -40,7 +46,21 @@ app.get('/health', (_req, res) => {
   })
 })
 
-// 404
+// ──── Static Frontend Serving (Production) ────
+const distPath = path.resolve(__dirname, '../dist')
+
+if (fs.existsSync(distPath)) {
+  console.log(`[TRISHA Static] Serving frontend from ${distPath}`)
+  app.use(express.static(distPath))
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.path.startsWith('/api') && req.path !== '/health') {
+      return res.sendFile(path.join(distPath, 'index.html'))
+    }
+    next()
+  })
+}
+
+// 404 (for unhandled API routes)
 app.use((_req, res) => {
   res.status(404).json({ success: false, error: 'Endpoint not found. See /health for info.' })
 })
