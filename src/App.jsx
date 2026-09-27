@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
+import MobileNav from './components/MobileNav'
 import OfflineBanner from './components/OfflineBanner'
 import ConflictModal from './components/ConflictModal'
 import Dashboard from './pages/Dashboard'
@@ -270,6 +271,9 @@ export default function App() {
           </div>
         ))}
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileNav activeTab={activeTab} setActiveTab={setActiveTab} lang={lang} />
     </div>
   )
 }
