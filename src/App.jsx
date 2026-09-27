@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
-import MobileNav from './components/MobileNav'
 import OfflineBanner from './components/OfflineBanner'
 import ConflictModal from './components/ConflictModal'
 import Dashboard from './pages/Dashboard'
@@ -10,6 +9,7 @@ import ApplicationTracker from './pages/ApplicationTracker'
 import DocumentVault from './pages/DocumentVault'
 import FamilyOverview from './pages/FamilyOverview'
 import GrievanceAssistant from './pages/GrievanceAssistant'
+import EligibilityFinder from './pages/EligibilityFinder'
 import { HOUSEHOLD_DATA, SCHEMES, CONFLICT_RULES, I18N } from './data/scholarshipData'
 import { 
   CheckCircle2, 
@@ -28,6 +28,7 @@ const TAB_LABELS = {
   tracker: 'Application & Verification Tracker',
   documents: 'DigiLocker Document Vault',
   family: 'Household & Sibling View',
+  eligibility: 'Smart Eligibility & Conflict Engine',
   assistant: 'Tribal AI Sahayak'
 }
 
@@ -199,19 +200,19 @@ export default function App() {
               onToast={addToast}
             />
           )}
+          {activeTab === 'eligibility' && (
+            <EligibilityFinder
+              activeStudent={activeStudent}
+              onTriggerConflict={handleTriggerConflict}
+              onNavigate={setActiveTab}
+              onToast={addToast}
+            />
+          )}
           {activeTab === 'assistant' && (
             <GrievanceAssistant activeStudent={activeStudent} lang={lang} setLang={setLang} onToast={addToast} />
           )}
         </main>
       </div>
-
-      {/* Mobile Bottom Navigation */}
-      <MobileNav
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        lang={lang}
-        deficiencyCount={deficiencyCount}
-      />
 
       {/* Conflict Modal */}
       {conflictData && conflictTargetScheme && (
@@ -226,22 +227,18 @@ export default function App() {
 
       {/* Notifications Drawer */}
       {showNotificationsDrawer && (
-        <div className="modal-overlay fade-in" onClick={() => setShowNotificationsDrawer(false)} role="presentation">
-          <div className="notifications-drawer" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="MoTA Notifications">
+        <div className="modal-overlay fade-in" onClick={() => setShowNotificationsDrawer(false)}>
+          <div className="notifications-drawer" onClick={(e) => e.stopPropagation()}>
             <div className="drawer-header">
               <div className="drawer-title-row">
-                <Bell size={18} aria-hidden="true" />
+                <Bell size={18} />
                 <h2>MoTA Notifications</h2>
               </div>
-              <button 
-                className="close-btn" 
-                onClick={() => setShowNotificationsDrawer(false)}
-                aria-label="Close notifications drawer"
-              >
-                <X size={18} aria-hidden="true" />
+              <button className="close-btn" onClick={() => setShowNotificationsDrawer(false)}>
+                <X size={18} />
               </button>
             </div>
-            <div className="drawer-list" role="region" aria-label="Notification list">
+            <div className="drawer-list">
               {notifications.map(n => (
                 <div key={n.id} className={`drawer-notif notif-${n.type}`}>
                   <div className="notif-head">
@@ -255,7 +252,6 @@ export default function App() {
             <button
               className="btn btn-secondary btn-full"
               onClick={() => { setNotifications(prev => prev.map(n => ({ ...n, read: true }))); setShowNotificationsDrawer(false); addToast('All read', 'info'); }}
-              aria-label="Mark all notifications as read"
             >
               Mark All as Read
             </button>
@@ -264,18 +260,12 @@ export default function App() {
       )}
 
       {/* Toast Stack */}
-      <div className="toast-stack" aria-live="polite" aria-atomic="true">
+      <div className="toast-stack" aria-live="polite">
         {toasts.map(toast => (
-          <div key={toast.id} className={`toast-item toast-${toast.type} fade-in`} role="status">
-            {toast.type === 'success' ? <CheckCircle2 size={16} aria-hidden="true" /> : toast.type === 'warning' ? <AlertTriangle size={16} aria-hidden="true" /> : <Info size={16} aria-hidden="true" />}
+          <div key={toast.id} className={`toast-item toast-${toast.type} fade-in`}>
+            {toast.type === 'success' ? <CheckCircle2 size={16} /> : toast.type === 'warning' ? <AlertTriangle size={16} /> : <Info size={16} />}
             <span className="toast-msg">{toast.message}</span>
-            <button 
-              className="toast-x" 
-              onClick={() => setToasts(t => t.filter(x => x.id !== toast.id))}
-              aria-label="Dismiss toast message"
-            >
-              <X size={13} aria-hidden="true" />
-            </button>
+            <button className="toast-x" onClick={() => setToasts(t => t.filter(x => x.id !== toast.id))}><X size={13} /></button>
           </div>
         ))}
       </div>

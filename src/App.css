@@ -31,19 +31,8 @@
   flex: 1;
   padding: 24px 32px 48px;
   width: 100%;
-  max-width: 1540px;
-  margin: 0 auto;
+  max-width: 100%;
   box-sizing: border-box;
-}
-
-/* Accessibility Focus Ring */
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid #0f172a;
-  outline-offset: 2px;
 }
 
 /* ─── Toast Stack ─── */
@@ -210,16 +199,9 @@ textarea:focus-visible {
 /* Responsive: Mobile collapses sidebar and switches to bottom nav */
 @media (max-width: 768px) {
   .app-main-panel {
-    margin-left: 0 !important;
-    width: 100% !important;
+    margin-left: 0;
   }
   .page-viewport {
-    padding: 14px 14px 88px; /* Extra bottom clearance for mobile nav */
-  }
-  .toast-stack {
-    bottom: 76px; /* Sits nicely above mobile bottom nav */
-    right: 14px;
-    left: 14px;
-    max-width: none;
+    padding: 16px;
   }
 }

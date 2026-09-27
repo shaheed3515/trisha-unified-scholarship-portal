@@ -36,29 +36,24 @@ export default function ConflictModal({
   if (!conflictData) return null
 
   return (
-    <div className="modal-overlay fade-in" role="presentation">
-      <div className="modal-content gov-card" role="dialog" aria-modal="true" aria-labelledby="conflict-modal-title">
+    <div className="modal-overlay fade-in">
+      <div className="modal-content gov-card">
         {/* Modal Top Header */}
         <div className="modal-header">
           <div className="modal-title-group">
             <div className="audit-icon-wrap">
-              <ShieldAlert size={22} className="audit-icon" aria-hidden="true" />
+              <ShieldAlert size={22} className="audit-icon" />
             </div>
             <div>
               <div className="audit-badge-row">
                 <span className="badge badge-danger">MoTA Central Anti-Duplication Engine</span>
                 <span className="badge badge-neutral">Rule 11 / GFR 2017</span>
               </div>
-              <h2 className="modal-heading" id="conflict-modal-title">Cross-Portal Scheme Conflict Detected</h2>
+              <h2 className="modal-heading">Cross-Portal Scheme Conflict Detected</h2>
             </div>
           </div>
-          <button 
-            className="close-btn" 
-            onClick={onClose} 
-            title="Dismiss"
-            aria-label="Close conflict modal dialog"
-          >
-            <X size={18} aria-hidden="true" />
+          <button className="close-btn" onClick={onClose} title="Dismiss">
+            <X size={18} />
           </button>
         </div>
 

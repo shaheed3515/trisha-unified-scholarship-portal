@@ -26,6 +26,3 @@ trisha.db-shm
 .DS_Store
 .vscode/
 .idea/
-.vercel
-DEPLOYMENT.md
-*deployment*.md

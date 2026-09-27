@@ -3,7 +3,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Router } from 'express'
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Scheme, Household, Student, Application, Document, Notification, ConflictLog } from '../models/index.js'
 
 const router = Router()
@@ -250,110 +249,6 @@ router.get('/stats/dashboard', async (req, res) => {
     })
   } catch (err) {
     res.status(500).json({ success: false, error: err.message })
-  }
-})
-
-// ──── POST /api/chat — Tribal AI Sahayak (Powered by Google Gemini) ────
-router.post('/chat', async (req, res) => {
-  try {
-    const { message, language = 'en', studentId } = req.body
-    const trimmed = (message || '').trim()
-
-    if (!trimmed) {
-      return res.status(400).json({ success: false, error: 'Query message is required.' })
-    }
-
-    const apiKey = process.env.GEMINI_API_KEY
-    if (!apiKey) {
-      return res.status(500).json({ success: false, error: 'GEMINI_API_KEY is not configured.' })
-    }
-
-    // Pull student demographic context if provided
-    let studentContext = ''
-    if (studentId) {
-      const student = await Student.findById(studentId).lean()
-      if (student) {
-        const apps = await Application.find({ studentId }).lean()
-        studentContext = `
-STUDENT PROFILE:
-Name: ${student.name} (${student.nameHi || ''})
-Tribal Category: Scheduled Tribe (Munda)
-Institution: ${student.institution} (${student.academicProgram}, ${student.yearOfStudy})
-APAAR ID: ${student.apaarId}
-Active Applications: ${apps.map(a => `${a.schemeId} (${a.portal}) - Status: ${a.statusText}`).join('; ')}
-`
-      }
-    }
-
-    const systemPrompt = `You are "TRISHA Tribal AI Sahayak" (जनजातीय छात्रवृत्ति सहायक), the official AI assistant of the Ministry of Tribal Affairs (MoTA), Government of India.
-You provide accurate, empathetic, and clear guidance to Scheduled Tribe (ST) and Particularly Vulnerable Tribal Group (PVTG) students regarding scholarship schemes, verification procedures, DigiLocker documentation, and Direct Benefit Transfer (DBT).
-
-KNOWLEDGE BASE:
-1. 5 MoTA SCHEMES:
-   - Pre-Matric ST: Classes IX & X, NSP portal, 75:25 funding ratio, prevents school dropouts.
-   - Post-Matric ST: Post-secondary up to post-graduate, NSP portal, tuition + living allowance via PFMS DBT.
-   - Top Class Education for ST: Premier institutions (IITs, NITs, IIMs, AIIMS, NLUs), full tuition + ₹36,000/year living grant, central sector 100%.
-   - National Fellowship for Higher Education of ST Students (NFST): M.Phil & Ph.D scholars, SFMP (Canara Bank) portal, JRF ₹37,000/mo, SRF ₹42,000/mo.
-   - National Overseas Scholarship for ST Candidates (NOS): Masters & Ph.D in QS Top 500 foreign universities, standalone NOS portal, 100% ministry sponsorship.
-
-2. ANTI-DUPLICATION & CROSS-SCHEME CONFLICT RULES:
-   - Rule 11 (GFR 2017) & MoTA Para 7.1: A student CANNOT simultaneously avail two scholarship/fellowship schemes from Central/State Government.
-   - If a student currently receives Post-Matric and gets selected for Top Class or NFST, they must surrender/relinquish the previous grant with an online Relinquishment NOC through TRISHA before receiving funds from the new scheme.
-
-3. VERIFICATION & DEFICIENCIES:
-   - Verification stages: (1) DigiLocker Identity/ST Certificate, (2) Institute Nodal Officer, (3) State Tribal Welfare Department, (4) MoTA Central Sanction, (5) PFMS Direct Benefit Transfer to Aadhaar-seeded bank account.
-   - If flagged with a deficiency (e.g., illegible income certificate), students can re-sync updated documents directly from DigiLocker without visiting physical offices.
-
-LANGUAGE & TONE INSTRUCTIONS:
-- Greet warmly (Johar / Namaste / जय जोहार).
-- Current user selected language: "${language}" (en: English, hi: Hindi, santhali: Santhali, gondi: Gondi).
-- When language is Hindi or tribal dialect, respond naturally in respectful Hindi / bilingual with Ol Chiki / dialect terms when appropriate.
-- Keep responses concise, structured, encouraging, and actionable (maximum 2-3 clear paragraphs or bullet points).
-${studentContext}
-`
-
-    const genAI = new GoogleGenerativeAI(apiKey)
-    
-    // Try candidate models supported by Google Gemini API
-    const candidateModels = ['gemini-flash-latest', 'gemini-3.8-flash', 'gemini-3.5-flash']
-    let replyText = null
-    let usedModel = null
-
-    for (const modelName of candidateModels) {
-      try {
-        const model = genAI.getGenerativeModel({
-          model: modelName,
-          systemInstruction: systemPrompt
-        })
-        const result = await model.generateContent(trimmed)
-        const response = await result.response
-        replyText = response.text()
-        if (replyText) {
-          usedModel = modelName
-          break
-        }
-      } catch (err) {
-        console.warn(`[Gemini model ${modelName} retry]:`, err.message)
-      }
-    }
-
-    if (!replyText) {
-      throw new Error('All Gemini model candidates failed or timed out.')
-    }
-
-    res.json({
-      success: true,
-      reply: replyText,
-      model: usedModel,
-      citation: 'MoTA Central Guidelines & Live Gemini 2.5'
-    })
-  } catch (err) {
-    console.error('[CHAT API ERROR]:', err)
-    res.status(500).json({
-      success: false,
-      error: 'Failed to generate AI response',
-      detail: err.message
-    })
   }
 })
 

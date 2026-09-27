@@ -280,55 +280,14 @@
   border: 2px solid #ffffff;
 }
 
-/* Mobile brand logo: hidden on desktop, visible on mobile */
-.mobile-header-brand {
-  display: none;
-  align-items: center;
-  gap: 8px;
-}
-
-.brand-emblem-mini {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-}
-
-.brand-emblem-mini .emblem-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.mobile-brand-name {
-  font-size: 15px;
-  font-weight: 800;
-  color: #0f172a;
-  letter-spacing: -0.02em;
-}
-
 @media (max-width: 768px) {
   .header-inner {
-    padding: 8px 12px;
-    gap: 8px;
-  }
-  .mobile-header-brand {
-    display: flex;
-  }
-  .page-context {
-    display: none;
+    padding: 8px 16px;
   }
   .pill-label, .member-pill-name {
     display: none;
   }
   .ministry-micro-tag {
     display: none;
-  }
-  .header-controls {
-    gap: 6px;
-  }
-  .header-pill {
-    padding: 6px 9px;
-  }
-  .member-switch-pill {
-    padding: 3px 6px;
   }
 }

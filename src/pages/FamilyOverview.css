@@ -290,17 +290,3 @@
     justify-content: space-between;
   }
 }
-
-@media (max-width: 640px) {
-  .family-stat-boxes {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .family-stat-pill {
-    width: 100%;
-    text-align: left;
-  }
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-}
