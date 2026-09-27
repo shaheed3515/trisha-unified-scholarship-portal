@@ -25,11 +25,12 @@ export default function GrievanceAssistant({ activeStudent, lang, setLang, onToa
   ])
   const [inputVal, setInputVal] = useState('')
   const [listening, setListening] = useState(false)
+  const [loading, setLoading] = useState(false)
   const chatBottomRef = useRef(null)
 
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+  }, [messages, loading])
 
   const suggestedQuestions = [
     {
@@ -46,20 +47,46 @@ export default function GrievanceAssistant({ activeStudent, lang, setLang, onToa
     }
   ]
 
-  const handleSend = (textToSend) => {
+  const handleSend = async (textToSend) => {
     const query = textToSend || inputVal
-    if (!query.trim()) return
+    if (!query.trim() || loading) return
 
     const userMsg = { id: Date.now(), sender: 'user', text: query }
     setMessages(prev => [...prev, userMsg])
     setInputVal('')
+    setLoading(true)
 
-    // Generate intelligent AI response
-    setTimeout(() => {
-      let botResponse = ''
-      let citation = 'MoTA Guidelines 2026-27'
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: query,
+          language: lang,
+          studentId: activeStudent?.id || 'student_priya'
+        })
+      })
 
+      const data = await res.json()
+
+      if (data.success && data.reply) {
+        setMessages(prev => [
+          ...prev, 
+          { 
+            id: Date.now() + 1, 
+            sender: 'bot', 
+            text: data.reply, 
+            citation: data.citation || `Google Gemini 3.8 Flash • MoTA Guidelines`
+          }
+        ])
+        setLoading(false)
+        return
+      }
+      throw new Error(data.error || 'Server error')
+    } catch (err) {
+      console.warn('[Gemini Live Fallback]:', err.message)
       const matchedQ = suggestedQuestions.find(sq => sq.q.toLowerCase() === query.toLowerCase())
+      let botResponse = ''
 
       if (matchedQ) {
         botResponse = matchedQ.a
@@ -75,9 +102,10 @@ export default function GrievanceAssistant({ activeStudent, lang, setLang, onToa
 
       setMessages(prev => [
         ...prev, 
-        { id: Date.now() + 1, sender: 'bot', text: botResponse, citation }
+        { id: Date.now() + 1, sender: 'bot', text: botResponse, citation: 'MoTA Central Guidelines (Grounded Fallback)' }
       ])
-    }, 600)
+      setLoading(false)
+    }
   }
 
   const toggleMic = () => {
@@ -148,7 +176,7 @@ export default function GrievanceAssistant({ activeStudent, lang, setLang, onToa
               className={`chat-bubble-row ${msg.sender === 'user' ? 'user-row' : 'bot-row'}`}
             >
               {msg.sender === 'bot' && (
-                <div className="bubble-avatar bot-avatar">
+                <div className="bubble-avatar bot-avatar" aria-hidden="true">
                   <Bot size={16} />
                 </div>
               )}
@@ -157,13 +185,28 @@ export default function GrievanceAssistant({ activeStudent, lang, setLang, onToa
                 <p className="bubble-text">{msg.text}</p>
                 {msg.citation && (
                   <div className="bubble-citation">
-                    <ShieldCheck size={12} />
+                    <ShieldCheck size={12} aria-hidden="true" />
                     <span>{msg.citation}</span>
                   </div>
                 )}
               </div>
             </div>
           ))}
+
+          {loading && (
+            <div className="chat-bubble-row bot-row fade-in" aria-live="polite">
+              <div className="bubble-avatar bot-avatar" aria-hidden="true">
+                <Bot size={16} />
+              </div>
+              <div className="chat-bubble bot-bubble" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Sparkles size={14} className="sparkle-icon" style={{ animation: 'spin 2s linear infinite' }} />
+                <span className="bubble-text" style={{ fontStyle: 'italic', color: '#64748b' }}>
+                  Sahayak is analyzing with Gemini 3.8 Flash...
+                </span>
+              </div>
+            </div>
+          )}
+
           <div ref={chatBottomRef} />
         </div>
 
@@ -172,9 +215,10 @@ export default function GrievanceAssistant({ activeStudent, lang, setLang, onToa
           <button 
             className={`mic-button ${listening ? 'mic-listening' : ''}`}
             onClick={toggleMic}
+            aria-label="Speak query using voice recognition"
             title="Speak query in tribal dialect or Hindi"
           >
-            {listening ? <MicOff size={18} /> : <Mic size={18} />}
+            {listening ? <MicOff size={18} aria-hidden="true" /> : <Mic size={18} aria-hidden="true" />}
           </button>
 
           <input 
@@ -184,13 +228,17 @@ export default function GrievanceAssistant({ activeStudent, lang, setLang, onToa
             onChange={(e) => setInputVal(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             className="chat-text-input"
+            aria-label="Type your scholarship question"
           />
 
           <button 
             className="btn btn-primary send-chat-btn"
             onClick={() => handleSend()}
+            disabled={!inputVal.trim() || loading}
+            aria-label="Send query to Sahayak"
           >
-            <Send size={16} />
+            <span>Send</span>
+            <Send size={15} aria-hidden="true" />
           </button>
         </div>
       </div>
