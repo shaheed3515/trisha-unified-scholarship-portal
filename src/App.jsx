@@ -131,6 +131,19 @@ export default function App() {
   const deficiencyCount = activeStudent.applications?.reduce((acc, a) => acc + (a.deficiencies?.length || 0), 0) || 0
   const t = I18N[lang] || I18N.en
 
+  const getTabLabel = (tab) => {
+    switch (tab) {
+      case 'dashboard': return t.dashboard
+      case 'schemes': return t.schemes
+      case 'tracker': return t.applications
+      case 'documents': return t.documents
+      case 'family': return t.family
+      case 'eligibility': return t.eligibility || 'Eligibility Engine'
+      case 'assistant': return t.assistant
+      default: return t.dashboard
+    }
+  }
+
   return (
     <div className="app-layout">
       {/* Left Sidebar */}
@@ -157,7 +170,7 @@ export default function App() {
           setOfflineMode={setOfflineMode}
           notifications={notifications}
           onOpenNotifications={() => setShowNotificationsDrawer(true)}
-          activeTabLabel={TAB_LABELS[activeTab] || 'Dashboard'}
+          activeTabLabel={getTabLabel(activeTab)}
           onNavigate={setActiveTab}
         />
 

@@ -62,7 +62,7 @@ export default function Header({
             title="Launch MoTA Smart Eligibility Engine"
           >
             <Sparkles size={14} style={{ color: '#ff9933' }} />
-            <span className="pill-label">Launch Eligibility Engine</span>
+            <span className="pill-label">{t.launchEligibility || 'Launch Eligibility Engine'}</span>
           </button>
 
           {/* Offline Toggle */}
@@ -72,7 +72,7 @@ export default function Header({
             title="Toggle Forest / Low Connectivity Mode"
           >
             {offlineMode ? <WifiOff size={15} /> : <Wifi size={15} />}
-            <span className="pill-label">{offlineMode ? 'Offline' : 'Online'}</span>
+            <span className="pill-label">{offlineMode ? (t.offline || 'Offline') : (t.online || 'Online')}</span>
             <span className={`dot ${offlineMode ? 'dot-warn' : 'dot-ok'}`} />
           </button>
 

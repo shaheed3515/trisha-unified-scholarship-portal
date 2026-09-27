@@ -62,17 +62,17 @@ export default function Dashboard({
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '750px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ff9933', fontSize: '12px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            <Sparkles size={15} /> MoTA Smart Rule Engine · Problem 26238
+            <Sparkles size={15} /> {t.ruleEngineBadge || 'MoTA Smart Rule Engine · Problem 26238'}
           </div>
           <h3 style={{ margin: 0, fontSize: '17px', fontWeight: '800', color: '#ffffff' }}>
-            Not sure which scholarship matches your education & family income?
+            {t.eligibilityBannerTitle || 'Not sure which scholarship matches your education & family income?'}
           </h3>
           <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.4' }}>
-            Run the 1-minute Eligibility & Conflict Calculator to find your maximum monthly allowance and verify compliance with the MoTA One-Active-Scholarship rule.
+            {t.eligibilityBannerDesc || 'Run the 1-minute Eligibility & Conflict Calculator to find your maximum monthly allowance and verify compliance with the MoTA One-Active-Scholarship rule.'}
           </p>
         </div>
         <button className="btn btn-warning" style={{ fontWeight: '700', gap: '6px', whiteSpace: 'nowrap' }}>
-          <span>Launch Eligibility Engine</span>
+          <span>{t.launchEligibility || 'Launch Eligibility Engine'}</span>
           <ArrowRight size={15} />
         </button>
       </div>
@@ -82,9 +82,9 @@ export default function Dashboard({
         <div className="banner-grid">
           <div className="hero-left">
             <div className="student-badge-row">
-              <span className="badge badge-primary">Scheduled Tribe ({household.tribalGroup})</span>
+              <span className="badge badge-primary">{t.stCategory} ({household.tribalGroup})</span>
               <span className="badge badge-success">
-                <ShieldCheck size={13} /> DigiLocker Verified
+                <ShieldCheck size={13} /> {t.digilockerVerified}
               </span>
               <span className="badge badge-neutral">APAAR: {activeStudent.apaarId}</span>
             </div>
@@ -101,22 +101,22 @@ export default function Dashboard({
             </p>
 
             <div className="hero-household-meta">
-              <span>Village: <strong>{household.village}, {household.district}</strong></span>
+              <span>{t.village} <strong>{household.village}, {household.district}</strong></span>
               <span className="bullet-sep">•</span>
-              <span>Family Annual Income: <strong>{household.annualFamilyIncome}</strong></span>
+              <span>{t.annualIncome} <strong>{household.annualFamilyIncome}</strong></span>
             </div>
           </div>
 
           <div className="hero-right">
             <div className="family-aggregate-box">
-              <div className="aggregate-label">Household Scholarship DBT Pool</div>
+              <div className="aggregate-label">{t.householdDbtPool}</div>
               <div className="aggregate-value">{household.totalDisbursedToHousehold}</div>
-              <div className="aggregate-sub">Across {household.members.length} Registered Children</div>
+              <div className="aggregate-sub">{household.members.length} {t.acrossChildren}</div>
               <button 
                 className="btn btn-sm btn-secondary aggregate-btn"
                 onClick={() => onNavigate('family')}
               >
-                <span>Household View</span>
+                <span>{t.householdViewBtn}</span>
                 <ChevronRight size={14} />
               </button>
             </div>
@@ -132,18 +132,18 @@ export default function Dashboard({
           </div>
           <div className="def-info">
             <div className="def-header-row">
-              <span className="badge badge-warning">Action Required by State Nodal Officer</span>
+              <span className="badge badge-warning">{t.actionRequiredBadge}</span>
               <span className="def-app-code">{actionRequiredApp.id} ({actionRequiredApp.portal})</span>
             </div>
-            <div className="def-title">{actionRequiredApp.deficiencies[0]?.title}</div>
-            <div className="def-detail">{actionRequiredApp.deficiencies[0]?.detail}</div>
+            <div className="def-title">{lang === 'hi' ? t.incomeCertRequired : (actionRequiredApp.deficiencies[0]?.title || t.incomeCertRequired)}</div>
+            <div className="def-detail">{lang === 'hi' ? t.deficiencyDetail : (actionRequiredApp.deficiencies[0]?.detail || t.deficiencyDetail)}</div>
           </div>
           <button 
             className="btn btn-warning def-action-btn"
             onClick={() => onResolveDeficiency(actionRequiredApp.id)}
           >
             <ShieldCheck size={16} />
-            <span>{actionRequiredApp.deficiencies[0]?.actionLabel || 'Resolve via DigiLocker'}</span>
+            <span>{t.resolveDigilocker}</span>
           </button>
         </aside>
       )}
@@ -166,7 +166,7 @@ export default function Dashboard({
           </div>
           <div className="stat-content">
             <div className="stat-num">₹{totalDisbursed.toLocaleString('en-IN')}</div>
-            <div className="stat-title">{t.totalDisbursed} (Direct DBT)</div>
+            <div className="stat-title">{t.totalDisbursed} ({t.directDbt})</div>
           </div>
         </div>
 
@@ -186,7 +186,7 @@ export default function Dashboard({
           </div>
           <div className="stat-content">
             <div className="stat-num">5 / 5</div>
-            <div className="stat-title">DigiLocker Records e-Verified</div>
+            <div className="stat-title">{t.digilockerRecordsVerified}</div>
           </div>
         </div>
       </section>
@@ -195,11 +195,11 @@ export default function Dashboard({
       <section className="portfolio-section">
         <div className="section-header-row">
           <div>
-            <h2 className="section-title">Unified Scholarship Portfolio (MoTA)</h2>
-            <p className="section-sub">Single view correlating applications across NSP, SFMP (Canara Bank), and NOS</p>
+            <h2 className="section-title">{t.portfolioTitle}</h2>
+            <p className="section-sub">{t.portfolioSub}</p>
           </div>
           <button className="btn btn-secondary btn-sm" onClick={() => onNavigate('schemes')}>
-            <span>Explore All 5 Schemes</span>
+            <span>{t.exploreAllSchemes}</span>
             <ArrowRight size={14} />
           </button>
         </div>
@@ -213,17 +213,17 @@ export default function Dashboard({
                   <div className="app-main-info">
                     <div className="portal-pill-row">
                       <span className="badge badge-primary">{app.portal}</span>
-                      <span className="badge badge-neutral">Session {app.academicSession}</span>
-                      <span className="app-id-text">Ref: {app.id}</span>
+                      <span className="badge badge-neutral">{t.session} {app.academicSession}</span>
+                      <span className="app-id-text">{t.ref} {app.id}</span>
                     </div>
-                    <h3 className="app-scheme-title">{schemeMeta.name || app.schemeId}</h3>
+                    <h3 className="app-scheme-title">{(lang === 'hi' && schemeMeta.nameHi) ? schemeMeta.nameHi : (schemeMeta.name || app.schemeId)}</h3>
                     <div className="app-sub-text">{schemeMeta.portalFullName}</div>
                   </div>
 
                   <div className="app-status-badge-wrap">
                     <span className={`badge ${app.status === 'disbursed' ? 'badge-success' : app.status === 'action_required' ? 'badge-warning' : 'badge-primary'}`}>
                       {app.status === 'disbursed' ? <CheckCircle2 size={13} /> : <Clock size={13} />}
-                      {app.statusText}
+                      {lang === 'hi' ? (app.status === 'disbursed' ? 'छात्र बैंक खाते में डीबीटी राशि जमा' : app.statusText) : app.statusText}
                     </span>
                     <div className="sanction-amount-pill">{app.sanctionAmount}</div>
                   </div>
@@ -233,10 +233,10 @@ export default function Dashboard({
                 <div className="stages-progress-wrap">
                   <div className="progress-labels-row">
                     <span className="progress-label-text">
-                      Verification Milestones (Stage {app.stages.filter(s => s.done).length} of {app.stages.length})
+                      {t.verificationMilestones} ({t.stage} {app.stages.filter(s => s.done).length} {t.of} {app.stages.length})
                     </span>
                     <span className="progress-pct-text">
-                      {Math.round((app.stages.filter(s => s.done).length / app.stages.length) * 100)}% Completed
+                      {Math.round((app.stages.filter(s => s.done).length / app.stages.length) * 100)}% {t.completed}
                     </span>
                   </div>
                   <div className="progress-bar-container">
@@ -256,26 +256,26 @@ export default function Dashboard({
                     <div className="dbt-card-header">
                       <div className="dbt-header-title">
                         <Banknote size={16} />
-                        <span>Public Financial Management System (PFMS) Remittance Confirmation</span>
+                        <span>{t.pfmsConfirmation}</span>
                       </div>
-                      <span className="badge badge-success">PFMS Validated</span>
+                      <span className="badge badge-success">{t.pfmsValidated}</span>
                     </div>
 
                     <div className="dbt-meta-grid">
                       <div className="dbt-meta-item">
-                        <span className="meta-label">Disbursed Amount</span>
+                        <span className="meta-label">{t.disbursedAmount}</span>
                         <span className="meta-val highlight-val">{app.dbtDetails.amountCredited}</span>
                       </div>
                       <div className="dbt-meta-item">
-                        <span className="meta-label">Credit Date</span>
+                        <span className="meta-label">{t.creditDate}</span>
                         <span className="meta-val">{app.dbtDetails.creditDate}</span>
                       </div>
                       <div className="dbt-meta-item">
-                        <span className="meta-label">Bank & Branch</span>
+                        <span className="meta-label">{t.bankBranch}</span>
                         <span className="meta-val">{app.dbtDetails.bankName}</span>
                       </div>
                       <div className="dbt-meta-item">
-                        <span className="meta-label">RBI / Bank UTR Number</span>
+                        <span className="meta-label">{t.utrNumber}</span>
                         <span className="meta-val code-val">{app.dbtDetails.utrNumber}</span>
                       </div>
                     </div>
@@ -285,13 +285,13 @@ export default function Dashboard({
                 {/* Card Action Footer */}
                 <div className="app-card-footer">
                   <div className="footer-left-meta">
-                    Last Nodal Action: <strong>{app.lastActionDate}</strong>
+                    {t.lastNodalAction} <strong>{app.lastActionDate}</strong>
                   </div>
                   <button 
                     className="btn btn-secondary btn-sm"
                     onClick={() => onNavigate('tracker')}
                   >
-                    <span>Full Verification Timeline</span>
+                    <span>{t.fullTimeline}</span>
                     <ChevronRight size={14} />
                   </button>
                 </div>
@@ -309,10 +309,9 @@ export default function Dashboard({
               <Award size={22} />
             </div>
             <div>
-              <h3 className="conflict-demo-heading">Test MoTA Cross-Scheme Deduplication Guard</h3>
+              <h3 className="conflict-demo-heading">{t.conflictDemoHeading}</h3>
               <p className="conflict-demo-sub">
-                Official MoTA rule: ST students availing one scholarship cannot receive concurrent grants.
-                Click below to simulate attempting to apply for another scheme while having an active Post-Matric grant.
+                {t.conflictDemoSub}
               </p>
             </div>
           </div>
@@ -324,7 +323,7 @@ export default function Dashboard({
             onClick={() => onTriggerConflict('nfst')}
           >
             <AlertTriangle size={16} />
-            <span>Simulate Applying to NFST Fellowship (SFMP)</span>
+            <span>{t.simulateNfst}</span>
           </button>
 
           <button 
@@ -332,7 +331,7 @@ export default function Dashboard({
             onClick={() => onTriggerConflict('top-class')}
           >
             <ShieldCheck size={16} />
-            <span>Simulate Top-Class Transition Audit</span>
+            <span>{t.simulateTopClass}</span>
           </button>
         </div>
       </section>
