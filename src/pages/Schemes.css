@@ -1,0 +1,18 @@
+.schemes-page { display:flex; flex-direction:column; gap:12px; }
+.page-title { font-size:18px; font-weight:800; color:var(--text); }
+.page-sub { font-size:12px; color:var(--text3); margin-top:-8px; }
+.portal-map { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
+.portal-item { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--text2); }
+.portal-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.portal-unified { font-size:11px; font-weight:700; color:var(--primary); padding-top:6px; border-top:1px solid var(--border); margin-top:2px; }
+.schemes-list { display:flex; flex-direction:column; gap:10px; }
+.scheme-full-card { padding:14px; cursor:pointer; transition:transform 0.2s; }
+.scheme-full-card:hover { transform:translateY(-1px); }
+.sfc-top { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.sfc-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.sfc-info { flex:1; }
+.sfc-name { font-size:14px; font-weight:700; color:var(--text); }
+.sfc-portal { font-size:10px; color:var(--text3); }
+.sfc-meta { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+.sfc-meta-item { font-size:11px; color:var(--text2); }
+.sfc-eligibility { font-size:11px; color:var(--text3); background:var(--surface2); border-radius:6px; padding:6px 8px; }

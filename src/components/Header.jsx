@@ -1,0 +1,147 @@
+import { useState } from 'react'
+import { 
+  Languages, 
+  Users, 
+  Wifi, 
+  WifiOff, 
+  Bell, 
+  ShieldCheck, 
+  ChevronDown, 
+  CheckCircle2,
+  Search,
+  X
+} from 'lucide-react'
+import { I18N } from '../data/scholarshipData'
+import './Header.css'
+
+export default function Header({ 
+  lang, 
+  setLang, 
+  activeStudent, 
+  setActiveStudent, 
+  household, 
+  offlineMode, 
+  setOfflineMode, 
+  notifications,
+  onOpenNotifications,
+  activeTabLabel
+}) {
+  const [showLangMenu, setShowLangMenu] = useState(false)
+  const [showMemberMenu, setShowMemberMenu] = useState(false)
+  const t = I18N[lang] || I18N.en
+  const unreadCount = notifications.filter(n => !n.read).length
+
+  return (
+    <header className="top-header">
+      {/* Tricolor Government Strip */}
+      <div className="gov-tricolor-bar" />
+
+      <div className="header-inner">
+        {/* Left: Current Page Title + Ministry Tag */}
+        <div className="header-left-section">
+          <div className="page-context">
+            <h2 className="current-page-title">{activeTabLabel}</h2>
+            <span className="ministry-micro-tag">{t.ministry}</span>
+          </div>
+        </div>
+
+        {/* Right: Global Controls */}
+        <div className="header-controls">
+          {/* Offline Toggle */}
+          <button 
+            className={`header-pill ${offlineMode ? 'pill-offline' : ''}`}
+            onClick={() => setOfflineMode(!offlineMode)}
+            title="Toggle Forest / Low Connectivity Mode"
+          >
+            {offlineMode ? <WifiOff size={15} /> : <Wifi size={15} />}
+            <span className="pill-label">{offlineMode ? 'Offline' : 'Online'}</span>
+            <span className={`dot ${offlineMode ? 'dot-warn' : 'dot-ok'}`} />
+          </button>
+
+          {/* Language Selector */}
+          <div className="dropdown-wrap">
+            <button 
+              className="header-pill"
+              onClick={() => { setShowLangMenu(!showLangMenu); setShowMemberMenu(false); }}
+            >
+              <Languages size={15} />
+              <span className="pill-label">
+                {lang === 'en' ? 'EN' : lang === 'hi' ? 'हिं' : lang === 'santhali' ? 'ᱥᱟᱱ' : 'गों'}
+              </span>
+              <ChevronDown size={13} className={showLangMenu ? 'arrow-flipped' : ''} />
+            </button>
+
+            {showLangMenu && (
+              <div className="dropdown-panel lang-panel fade-in">
+                {[
+                  { code: 'en', label: 'English', sub: 'Official Portal Language' },
+                  { code: 'hi', label: 'हिंदी (Hindi)', sub: 'राजभाषा' },
+                  { code: 'santhali', label: 'ᱥᱟᱱᱛᱟᱲᱤ (Santhali)', sub: 'Ol Chiki Script' },
+                  { code: 'gondi', label: 'गोंडी (Gondi)', sub: 'Central Tribal Dialect' }
+                ].map(l => (
+                  <div 
+                    key={l.code}
+                    className={`dropdown-option ${lang === l.code ? 'option-active' : ''}`}
+                    onClick={() => { setLang(l.code); setShowLangMenu(false); }}
+                  >
+                    <span className="option-main">{l.label}</span>
+                    <span className="option-sub">{l.sub}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Sibling Switcher */}
+          <div className="dropdown-wrap">
+            <button 
+              className="header-pill member-switch-pill"
+              onClick={() => { setShowMemberMenu(!showMemberMenu); setShowLangMenu(false); }}
+            >
+              <div className="mini-avatar">{activeStudent.avatarInitials}</div>
+              <span className="pill-label member-pill-name">{activeStudent.name}</span>
+              <ChevronDown size={13} className={showMemberMenu ? 'arrow-flipped' : ''} />
+            </button>
+
+            {showMemberMenu && (
+              <div className="dropdown-panel member-panel fade-in">
+                <div className="panel-header">
+                  <Users size={14} />
+                  <span>Switch Family Member</span>
+                  <span className="hh-id-badge">{household.householdId}</span>
+                </div>
+                {household.members.map(member => (
+                  <div 
+                    key={member.id} 
+                    className={`dropdown-option member-option ${member.id === activeStudent.id ? 'option-active' : ''}`}
+                    onClick={() => { setActiveStudent(member); setShowMemberMenu(false); }}
+                  >
+                    <div className="member-opt-avatar">{member.avatarInitials}</div>
+                    <div className="member-opt-info">
+                      <div className="member-opt-name">
+                        {member.name}
+                        {member.isPrimary && <span className="primary-tag">Primary</span>}
+                      </div>
+                      <div className="member-opt-inst">{member.institution}</div>
+                    </div>
+                    {member.id === activeStudent.id && <CheckCircle2 size={15} className="check-active" />}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Notifications */}
+          <button 
+            className="icon-btn notif-btn"
+            onClick={onOpenNotifications}
+            title="Stage Notifications"
+          >
+            <Bell size={18} />
+            {unreadCount > 0 && <span className="notif-count">{unreadCount}</span>}
+          </button>
+        </div>
+      </div>
+    </header>
+  )
+}

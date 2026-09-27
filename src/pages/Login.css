@@ -1,0 +1,107 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.login-bg {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #4c1d95 0%, #1e3a8a 50%, #065f46 100%);
+  z-index: 0;
+}
+.login-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 24px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+.login-header { text-align: center; margin-bottom: 24px; }
+.login-logo {
+  font-size: 48px;
+  display: inline-block;
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  border-radius: 16px;
+  width: 72px; height: 72px;
+  line-height: 72px;
+  margin-bottom: 12px;
+}
+.login-header h1 { font-size: 28px; font-weight: 800; color: #111827; margin-bottom: 4px; }
+.login-header p { font-size: 13px; color: #7c3aed; font-weight: 600; margin-bottom: 8px; }
+.login-subtitle {
+  font-size: 11px;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.login-steps {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  transition: all 0.3s;
+}
+.step-dot.active { background: #7c3aed; width: 24px; border-radius: 4px; }
+
+.login-step-title { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 16px; }
+.login-form { display: flex; flex-direction: column; gap: 12px; }
+.phone-input-wrap { display: flex; gap: 8px; align-items: center; }
+.phone-prefix {
+  background: #f3f4f6;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+.phone-input { flex: 1; }
+.otp-input { letter-spacing: 12px; font-size: 20px; font-weight: 700; text-align: center; }
+.login-hint { font-size: 11px; color: #9ca3af; text-align: center; }
+.btn-text { background: none; color: #7c3aed; font-size: 13px; font-weight: 600; text-align: center; padding: 4px; }
+.digilocker-info {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 14px;
+}
+.dl-icon { font-size: 28px; }
+.dl-perms { display: flex; flex-direction: column; gap: 6px; }
+.dl-perm-item { font-size: 12px; color: #374151; padding: 6px 10px; background: #f0fdf4; border-radius: 6px; }
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+.login-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 10px;
+  color: #9ca3af;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.login-logos { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; color: #374151; }

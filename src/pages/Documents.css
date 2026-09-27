@@ -1,0 +1,24 @@
+.documents-page { display:flex; flex-direction:column; gap:12px; }
+.dl-banner { background:linear-gradient(135deg,var(--primary),var(--secondary)); border-radius:var(--radius); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; }
+.dl-banner-title { font-size:13px; font-weight:700; color:#fff; margin-bottom:3px; }
+.dl-banner-sub { font-size:11px; color:rgba(255,255,255,0.8); }
+.doc-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.doc-stat { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:10px; text-align:center; display:flex; flex-direction:column; gap:3px; }
+.doc-stat span:first-child { font-size:20px; font-weight:800; }
+.doc-stat span:last-child { font-size:10px; color:var(--text3); }
+.filter-chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; }
+.filter-chips::-webkit-scrollbar { display:none; }
+.chip { background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:5px 12px; font-size:11px; font-weight:600; color:var(--text2); white-space:nowrap; transition:all 0.2s; }
+.chip.active { background:var(--primary); border-color:var(--primary); color:#fff; }
+.upload-btn { display:flex; align-items:center; justify-content:center; gap:6px; padding:12px; background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius); font-size:13px; font-weight:600; color:var(--primary); cursor:pointer; transition:all 0.2s; }
+.upload-btn:hover { background:var(--primary); color:#fff; }
+.docs-list { display:flex; flex-direction:column; gap:8px; }
+.doc-card { padding:12px 14px; display:flex; align-items:center; gap:10px; }
+.doc-icon { font-size:26px; flex-shrink:0; }
+.doc-info { flex:1; min-width:0; }
+.doc-name { font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:4px; }
+.doc-meta { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.doc-date, .doc-size { font-size:10px; color:var(--text3); }
+.doc-actions { flex-shrink:0; }
+.spinner-dark { width:14px; height:14px; border:2px solid rgba(124,58,237,0.3); border-top-color:var(--primary); border-radius:50%; animation:spin 0.8s linear infinite; display:inline-block; }
+.doc-note { background:var(--surface2); border-radius:8px; padding:10px 12px; font-size:11px; color:var(--text3); line-height:1.6; }

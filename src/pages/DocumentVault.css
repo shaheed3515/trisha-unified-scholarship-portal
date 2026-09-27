@@ -1,0 +1,279 @@
+.vault-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vault-header-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vault-badge-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.vault-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.vault-sub {
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.sync-digilocker-btn {
+  flex-shrink: 0;
+}
+
+.spinning-sync {
+  animation: spin 1s linear infinite;
+}
+
+/* Document Cards Grid */
+.vault-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.doc-vault-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 4px solid var(--primary-700);
+}
+
+.doc-card-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.doc-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--primary-100);
+  color: var(--primary-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.doc-meta-col {
+  flex: 1;
+}
+
+.doc-category-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.doc-title {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 2px 0;
+}
+
+.doc-issuer {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.doc-details-box {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doc-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.doc-label {
+  color: var(--text-muted);
+}
+
+.doc-val {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.mono-val {
+  font-family: monospace;
+}
+
+.verified-text {
+  color: var(--success-600);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.doc-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Certificate Preview Modal */
+.doc-preview-modal {
+  max-width: 620px;
+}
+
+.preview-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.preview-heading {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+.preview-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.simulated-cert-sheet {
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.02);
+}
+
+.cert-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 34px;
+  font-weight: 900;
+  color: rgba(15, 23, 42, 0.04);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.cert-top-crest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 2px solid var(--primary-700);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.cert-state-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary-800);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.cert-order-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.cert-body-content p {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.cert-info-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.cert-table-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  border-bottom: 1px dotted var(--border-subtle);
+  padding-bottom: 4px;
+}
+
+.cert-table-row span {
+  color: var(--text-muted);
+}
+
+.cert-footer-stamp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 14px;
+  gap: 16px;
+}
+
+.qr-simulated-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  max-width: 180px;
+}
+
+.digi-signature-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.digi-signature-box strong {
+  color: var(--success-600);
+}
+
+.preview-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .vault-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
