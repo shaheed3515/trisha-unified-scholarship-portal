@@ -157,6 +157,7 @@ export default function App() {
           notifications={notifications}
           onOpenNotifications={() => setShowNotificationsDrawer(true)}
           activeTabLabel={TAB_LABELS[activeTab] || 'Dashboard'}
+          onNavigate={setActiveTab}
         />
 
         {/* Offline Banner */}

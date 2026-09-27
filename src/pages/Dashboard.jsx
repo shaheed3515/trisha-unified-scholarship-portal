@@ -43,7 +43,41 @@ export default function Dashboard({
 
   return (
     <div className="dashboard-view fade-in">
-      {/* Top Banner: Student Demographic Profile & National Identity */}
+      {/* Top Banner: Smart Eligibility Finder Banner */}
+      <div 
+        className="gov-card eligibility-cta-banner card-interactive" 
+        onClick={() => onNavigate('eligibility')}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '14px',
+          background: 'linear-gradient(135deg, #16406c 0%, #1e4d82 100%)',
+          color: '#ffffff',
+          cursor: 'pointer',
+          border: '1.5px solid rgba(255,153,51,0.4)',
+          marginBottom: '20px'
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '750px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ff9933', fontSize: '12px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <Sparkles size={15} /> MoTA Smart Rule Engine · Problem 26238
+          </div>
+          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: '800', color: '#ffffff' }}>
+            Not sure which scholarship matches your education & family income?
+          </h3>
+          <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.4' }}>
+            Run the 1-minute Eligibility & Conflict Calculator to find your maximum monthly allowance and verify compliance with the MoTA One-Active-Scholarship rule.
+          </p>
+        </div>
+        <button className="btn btn-warning" style={{ fontWeight: '700', gap: '6px', whiteSpace: 'nowrap' }}>
+          <span>Launch Eligibility Engine</span>
+          <ArrowRight size={15} />
+        </button>
+      </div>
+
+      {/* Student Demographic Profile & National Identity */}
       <section className="student-hero-banner" aria-label="Student Profile Banner">
         <div className="banner-grid">
           <div className="hero-left">
@@ -156,40 +190,6 @@ export default function Dashboard({
           </div>
         </div>
       </section>
-
-      {/* Smart Eligibility Finder Banner */}
-      <div 
-        className="gov-card eligibility-cta-banner card-interactive" 
-        onClick={() => onNavigate('eligibility')}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '14px',
-          background: 'linear-gradient(135deg, #16406c 0%, #1e4d82 100%)',
-          color: '#ffffff',
-          cursor: 'pointer',
-          border: '1.5px solid rgba(255,153,51,0.4)',
-          marginBottom: '20px'
-        }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '750px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ff9933', fontSize: '12px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            <Sparkles size={15} /> MoTA Smart Rule Engine · Problem 26238
-          </div>
-          <h3 style={{ margin: 0, fontSize: '17px', fontWeight: '800', color: '#ffffff' }}>
-            Not sure which scholarship matches your education & family income?
-          </h3>
-          <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.4' }}>
-            Run the 1-minute Eligibility & Conflict Calculator to find your maximum monthly allowance and verify compliance with the MoTA One-Active-Scholarship rule.
-          </p>
-        </div>
-        <button className="btn btn-warning" style={{ fontWeight: '700', gap: '6px', whiteSpace: 'nowrap' }}>
-          <span>Launch Eligibility Engine</span>
-          <ArrowRight size={15} />
-        </button>
-      </div>
 
       {/* Main Unified MoTA Portfolio Section */}
       <section className="portfolio-section">

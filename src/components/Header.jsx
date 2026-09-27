@@ -9,6 +9,7 @@ import {
   ChevronDown, 
   CheckCircle2,
   Search,
+  Sparkles,
   X
 } from 'lucide-react'
 import { I18N } from '../data/scholarshipData'
@@ -24,7 +25,8 @@ export default function Header({
   setOfflineMode, 
   notifications,
   onOpenNotifications,
-  activeTabLabel
+  activeTabLabel,
+  onNavigate
 }) {
   const [showLangMenu, setShowLangMenu] = useState(false)
   const [showMemberMenu, setShowMemberMenu] = useState(false)
@@ -47,6 +49,22 @@ export default function Header({
 
         {/* Right: Global Controls */}
         <div className="header-controls">
+          {/* Quick Launch Eligibility Engine Button */}
+          <button 
+            className="header-pill"
+            style={{
+              background: 'linear-gradient(135deg, #16406c, #1e4d82)',
+              color: '#ffffff',
+              borderColor: '#ff9933',
+              fontWeight: '700'
+            }}
+            onClick={() => onNavigate?.('eligibility')}
+            title="Launch MoTA Smart Eligibility Engine"
+          >
+            <Sparkles size={14} style={{ color: '#ff9933' }} />
+            <span className="pill-label">Launch Eligibility Engine</span>
+          </button>
+
           {/* Offline Toggle */}
           <button 
             className={`header-pill ${offlineMode ? 'pill-offline' : ''}`}
