@@ -14,7 +14,10 @@ import {
   Award,
   Zap,
   Check,
-  AlertCircle
+  Globe,
+  BookOpen,
+  Microscope,
+  Compass
 } from 'lucide-react'
 import { SCHEMES, CONFLICT_RULES } from '../data/scholarshipData'
 import './EligibilityFinder.css'
@@ -29,9 +32,7 @@ export default function EligibilityFinder({
   const [incomeBand, setIncomeBand] = useState('below_2_5l')
   const [instType, setInstType] = useState('premier')
   const [hasNetJrf, setHasNetJrf] = useState('none')
-  const [foreignAdmission, setForeignAdmission] = useState(false)
   const [studyAbroad, setStudyAbroad] = useState(false)
-  const [calculated, setCalculated] = useState(true)
 
   // Quick Preset Scenarios for Hackathon Demo
   const applyPreset = (type) => {
@@ -41,30 +42,29 @@ export default function EligibilityFinder({
       setInstType('premier')
       setHasNetJrf('none')
       setStudyAbroad(false)
-      onToast('Loaded Scenario: ST Student in Premier Institute (NIT/IIT)', 'info')
+      onToast?.('Loaded Scenario: ST Student in Premier Institute (NIT/IIT)', 'info')
     } else if (type === 'phd') {
       setEduLevel('phd')
       setIncomeBand('below_6l')
       setInstType('central_univ')
       setHasNetJrf('jrf_qualified')
       setStudyAbroad(false)
-      onToast('Loaded Scenario: Research Scholar with UGC-NET JRF', 'info')
+      onToast?.('Loaded Scenario: Research Scholar with UGC-NET JRF', 'info')
     } else if (type === 'abroad') {
       setEduLevel('overseas')
       setIncomeBand('below_6l')
       setInstType('foreign')
       setHasNetJrf('none')
       setStudyAbroad(true)
-      onToast('Loaded Scenario: ST Student with Foreign University Offer', 'info')
+      onToast?.('Loaded Scenario: ST Student with Foreign University Offer', 'info')
     } else if (type === 'school') {
       setEduLevel('school_9_10')
       setIncomeBand('below_2_5l')
       setInstType('school')
       setHasNetJrf('none')
       setStudyAbroad(false)
-      onToast('Loaded Scenario: High School Student (Class 9-10)', 'info')
+      onToast?.('Loaded Scenario: High School Student (Class 9-10)', 'info')
     }
-    setCalculated(true)
   }
 
   // Determine eligible schemes based on answers
@@ -119,63 +119,78 @@ export default function EligibilityFinder({
   const verdict = getEligibilityVerdict()
 
   return (
-    <div className="eligibility-container fade-in">
+    <div className="eligibility-page fade-in">
       {/* Top Banner */}
-      <section className="gov-card eligibility-header-card">
-        <div className="eligibility-title-group">
-          <div className="badge-row">
+      <section className="gov-card eligibility-hero-card">
+        <div className="hero-top-row">
+          <div className="badge-group">
             <span className="badge badge-primary">MoTA Smart Rule Engine</span>
-            <span className="badge badge-warning">SIH 2026 Problem 26238</span>
+            <span className="badge badge-warning">Problem Statement 26238</span>
           </div>
-          <h1 className="eligibility-main-title">
-            <Sparkles size={24} className="sparkle-icon" />
-            Smart Scholarship Eligibility & Conflict Engine
-          </h1>
-          <p className="eligibility-desc">
-            Instantly evaluate eligibility across all 5 MoTA ST scholarship schemes, compute entitlements, and verify compliance with the <strong>MoTA One-Active-Scholarship Rule</strong>.
-          </p>
+          <button className="reset-btn" onClick={() => applyPreset('premier')}>
+            <RotateCcw size={14} /> Reset Filters
+          </button>
         </div>
 
+        <h1 className="hero-heading">
+          <Sparkles size={22} className="sparkle-icon" />
+          Smart Eligibility & One-Scholarship Conflict Engine
+        </h1>
+        
+        <p className="hero-subtext">
+          Evaluate eligibility across all 5 MoTA scholarship schemes, compute maximum financial allowances, and ensure compliance with the <strong>One-Active-Scholarship Rule</strong>.
+        </p>
+
         {/* 1-Click Demo Scenarios */}
-        <div className="preset-bar">
-          <span className="preset-label"><Zap size={14} /> Quick Demo Scenarios:</span>
+        <div className="preset-container">
+          <span className="preset-title"><Zap size={14} /> Quick Demo Scenarios:</span>
           <div className="preset-buttons">
-            <button className={`preset-btn ${eduLevel === 'ug_premier' && !studyAbroad ? 'active' : ''}`} onClick={() => applyPreset('premier')}>
-              🎓 NIT/IIT Student (Top Class)
+            <button 
+              className={`preset-btn ${eduLevel === 'ug_premier' && !studyAbroad ? 'active' : ''}`} 
+              onClick={() => applyPreset('premier')}
+            >
+              <GraduationCap size={14} /> NIT/IIT Student (Top Class)
             </button>
-            <button className={`preset-btn ${eduLevel === 'phd' ? 'active' : ''}`} onClick={() => applyPreset('phd')}>
-              🔬 Ph.D. Scholar (NFST)
+            <button 
+              className={`preset-btn ${eduLevel === 'phd' ? 'active' : ''}`} 
+              onClick={() => applyPreset('phd')}
+            >
+              <Microscope size={14} /> Ph.D. Scholar (NFST)
             </button>
-            <button className={`preset-btn ${studyAbroad ? 'active' : ''}`} onClick={() => applyPreset('abroad')}>
-              ✈️ Abroad Study (NOS)
+            <button 
+              className={`preset-btn ${studyAbroad ? 'active' : ''}`} 
+              onClick={() => applyPreset('abroad')}
+            >
+              <Globe size={14} /> Study Abroad (NOS)
             </button>
-            <button className={`preset-btn ${eduLevel === 'school_9_10' ? 'active' : ''}`} onClick={() => applyPreset('school')}>
-              📚 Class 9-10 (Pre-Matric)
+            <button 
+              className={`preset-btn ${eduLevel === 'school_9_10' ? 'active' : ''}`} 
+              onClick={() => applyPreset('school')}
+            >
+              <BookOpen size={14} /> Class 9–10 (Pre-Matric)
             </button>
           </div>
         </div>
       </section>
 
       {/* Main Two-Column Layout */}
-      <div className="eligibility-grid">
+      <div className="eligibility-main-grid">
         {/* Left Column: Interactive Questions */}
-        <div className="gov-card questionnaire-card">
-          <div className="card-header-bar">
+        <div className="gov-card criteria-card">
+          <div className="criteria-header">
             <h2><FileText size={18} /> Student Eligibility Criteria</h2>
-            <button className="reset-btn" onClick={() => applyPreset('premier')} title="Reset Criteria">
-              <RotateCcw size={14} /> Reset
-            </button>
+            <span className="criteria-count">3 Evaluation Factors</span>
           </div>
 
-          <form className="eligibility-form" onSubmit={(e) => e.preventDefault()}>
+          <form className="criteria-form" onSubmit={(e) => e.preventDefault()}>
             {/* Question 1: Education Level */}
-            <div className="form-group">
-              <label className="form-label">
-                1. Current Level of Study
-                <span className="req">*</span>
+            <div className="criteria-group">
+              <label className="criteria-label">
+                1. Level of Study
+                <span className="req-star">*</span>
               </label>
-              <div className="radio-tile-grid">
-                <label className={`radio-tile ${eduLevel === 'school_9_10' ? 'selected' : ''}`}>
+              <div className="options-stack">
+                <label className={`option-tile ${eduLevel === 'school_9_10' ? 'selected' : ''}`}>
                   <input 
                     type="radio" 
                     name="eduLevel" 
@@ -183,13 +198,13 @@ export default function EligibilityFinder({
                     checked={eduLevel === 'school_9_10'}
                     onChange={() => { setEduLevel('school_9_10'); setStudyAbroad(false); }} 
                   />
-                  <div className="tile-content">
-                    <span className="tile-title">Class 9 – 10 (Secondary)</span>
-                    <span className="tile-sub">EMRS, Govt or Recognized School</span>
+                  <div className="option-info">
+                    <span className="option-title">Class 9 – 10 (Secondary School)</span>
+                    <span className="option-desc">EMRS, Govt or State-Recognized School</span>
                   </div>
                 </label>
 
-                <label className={`radio-tile ${eduLevel === 'ug_college' ? 'selected' : ''}`}>
+                <label className={`option-tile ${eduLevel === 'ug_college' ? 'selected' : ''}`}>
                   <input 
                     type="radio" 
                     name="eduLevel" 
@@ -197,13 +212,13 @@ export default function EligibilityFinder({
                     checked={eduLevel === 'ug_college'}
                     onChange={() => { setEduLevel('ug_college'); setStudyAbroad(false); }} 
                   />
-                  <div className="tile-content">
-                    <span className="tile-title">College / Degree / Diploma</span>
-                    <span className="tile-sub">General Post-Matriculation Study</span>
+                  <div className="option-info">
+                    <span className="option-title">College / Degree / Diploma</span>
+                    <span className="option-desc">General Post-Matriculation Study after Class 10</span>
                   </div>
                 </label>
 
-                <label className={`radio-tile ${eduLevel === 'ug_premier' ? 'selected' : ''}`}>
+                <label className={`option-tile ${eduLevel === 'ug_premier' ? 'selected' : ''}`}>
                   <input 
                     type="radio" 
                     name="eduLevel" 
@@ -211,13 +226,13 @@ export default function EligibilityFinder({
                     checked={eduLevel === 'ug_premier'}
                     onChange={() => { setEduLevel('ug_premier'); setStudyAbroad(false); }} 
                   />
-                  <div className="tile-content">
-                    <span className="tile-title">Premier Institute (IIT/NIT/AIIMS)</span>
-                    <span className="tile-sub">Notified Top-Class Institutions</span>
+                  <div className="option-info">
+                    <span className="option-title">Premier Institute (IIT, NIT, AIIMS, IIM)</span>
+                    <span className="option-desc">Notified Top-Class Institutions across India</span>
                   </div>
                 </label>
 
-                <label className={`radio-tile ${eduLevel === 'phd' ? 'selected' : ''}`}>
+                <label className={`option-tile ${eduLevel === 'phd' ? 'selected' : ''}`}>
                   <input 
                     type="radio" 
                     name="eduLevel" 
@@ -225,13 +240,13 @@ export default function EligibilityFinder({
                     checked={eduLevel === 'phd'}
                     onChange={() => { setEduLevel('phd'); setStudyAbroad(false); }} 
                   />
-                  <div className="tile-content">
-                    <span className="tile-title">M.Phil / Ph.D. Research</span>
-                    <span className="tile-sub">Doctoral Fellowship Programs</span>
+                  <div className="option-info">
+                    <span className="option-title">M.Phil / Ph.D. Research</span>
+                    <span className="option-desc">Doctoral Research Fellowship Program</span>
                   </div>
                 </label>
 
-                <label className={`radio-tile ${eduLevel === 'overseas' ? 'selected' : ''}`}>
+                <label className={`option-tile ${eduLevel === 'overseas' ? 'selected' : ''}`}>
                   <input 
                     type="radio" 
                     name="eduLevel" 
@@ -239,61 +254,61 @@ export default function EligibilityFinder({
                     checked={eduLevel === 'overseas'}
                     onChange={() => { setEduLevel('overseas'); setStudyAbroad(true); }} 
                   />
-                  <div className="tile-content">
-                    <span className="tile-title">Overseas / Foreign University</span>
-                    <span className="tile-sub">Master's / Ph.D. abroad (QS Top 500)</span>
+                  <div className="option-info">
+                    <span className="option-title">Foreign / Overseas University</span>
+                    <span className="option-desc">Master's or Ph.D. abroad (QS Top 500 ranked)</span>
                   </div>
                 </label>
               </div>
             </div>
 
             {/* Question 2: Family Income */}
-            <div className="form-group">
-              <label className="form-label">
-                2. Annual Family Income
-                <span className="req">*</span>
+            <div className="criteria-group">
+              <label className="criteria-label">
+                2. Annual Family Parental Income
+                <span className="req-star">*</span>
               </label>
-              <div className="select-pill-group">
+              <div className="pill-group">
                 <button 
                   type="button"
-                  className={`pill-btn ${incomeBand === 'below_2_5l' ? 'selected' : ''}`}
+                  className={`pill-option ${incomeBand === 'below_2_5l' ? 'selected' : ''}`}
                   onClick={() => setIncomeBand('below_2_5l')}
                 >
-                  Under ₹2.50 Lakhs / yr (Pre/Post Matric & Top Class eligible)
+                  Under ₹2.50 Lakhs / year <span className="pill-tag">Pre/Post & Top Class</span>
                 </button>
                 <button 
                   type="button"
-                  className={`pill-btn ${incomeBand === 'below_6l' ? 'selected' : ''}`}
+                  className={`pill-option ${incomeBand === 'below_6l' ? 'selected' : ''}`}
                   onClick={() => setIncomeBand('below_6l')}
                 >
-                  ₹2.50 Lakhs – ₹6.00 Lakhs / yr (NOS eligible)
+                  ₹2.50 Lakhs – ₹6.00 Lakhs / year <span className="pill-tag">NOS Eligible</span>
                 </button>
                 <button 
                   type="button"
-                  className={`pill-btn ${incomeBand === 'above_6l' ? 'selected' : ''}`}
+                  className={`pill-option ${incomeBand === 'above_6l' ? 'selected' : ''}`}
                   onClick={() => setIncomeBand('above_6l')}
                 >
-                  Above ₹6.00 Lakhs / yr
+                  Above ₹6.00 Lakhs / year
                 </button>
               </div>
             </div>
 
-            {/* Question 3: National Exam Qualification */}
-            <div className="form-group">
-              <label className="form-label">
-                3. National Qualifications & Entrance
+            {/* Question 3: Competitive Exam */}
+            <div className="criteria-group">
+              <label className="criteria-label">
+                3. Qualifying Exam Status
               </label>
-              <div className="select-pill-group">
+              <div className="pill-group">
                 <button 
                   type="button"
-                  className={`pill-btn ${hasNetJrf === 'none' ? 'selected' : ''}`}
+                  className={`pill-option ${hasNetJrf === 'none' ? 'selected' : ''}`}
                   onClick={() => setHasNetJrf('none')}
                 >
-                  Standard College Entrance / Merit
+                  Standard Institutional Merit / Entrance
                 </button>
                 <button 
                   type="button"
-                  className={`pill-btn ${hasNetJrf === 'jrf_qualified' ? 'selected' : ''}`}
+                  className={`pill-option ${hasNetJrf === 'jrf_qualified' ? 'selected' : ''}`}
                   onClick={() => { setHasNetJrf('jrf_qualified'); setEduLevel('phd'); }}
                 >
                   UGC-NET / CSIR-NET (JRF Qualified)
@@ -304,10 +319,10 @@ export default function EligibilityFinder({
         </div>
 
         {/* Right Column: Engine Verdict & Conflict Analysis */}
-        <div className="verdict-col">
+        <div className="verdict-column">
           {/* Main Recommended Scheme Card */}
-          <div className="gov-card result-scheme-card">
-            <div className="result-badge-row">
+          <div className="gov-card result-card">
+            <div className="result-tags-row">
               <span className="badge badge-success">
                 <CheckCircle2 size={13} /> Recommended Scheme
               </span>
@@ -316,81 +331,88 @@ export default function EligibilityFinder({
               </span>
             </div>
 
-            <div className="result-main-head">
-              <div className="result-scheme-icon">{verdict.scheme.icon}</div>
-              <div>
-                <h3 className="result-scheme-name">{verdict.scheme.name}</h3>
-                <span className="result-scheme-hi">{verdict.scheme.nameHi}</span>
+            <div className="result-header">
+              <div className="result-scheme-badge-icon">
+                <Award size={28} className="award-icon" />
+              </div>
+              <div className="result-title-group">
+                <h3 className="result-name">{verdict.scheme.name}</h3>
+                <span className="result-name-hi">{verdict.scheme.nameHi}</span>
               </div>
             </div>
 
-            <div className="entitlement-highlight">
-              <div className="entitlement-label">Estimated Financial Entitlement:</div>
-              <div className="entitlement-value">{verdict.scheme.amountRange}</div>
-              <div className="entitlement-desc">{verdict.scheme.description}</div>
+            <div className="entitlement-box">
+              <div className="entitlement-tag">Estimated Financial Entitlement</div>
+              <div className="entitlement-val">{verdict.scheme.amountRange}</div>
+              <div className="entitlement-note">{verdict.scheme.description}</div>
             </div>
 
-            <div className="eligibility-points">
-              <h4>Eligibility Match Analysis:</h4>
-              <ul>
+            <div className="analysis-section">
+              <h4 className="analysis-title">Rule Engine Assessment:</h4>
+              <ul className="analysis-list">
                 {verdict.reasons.map((r, i) => (
-                  <li key={i}><Check size={14} className="green-chk" /> {r}</li>
+                  <li key={i}>
+                    <Check size={15} className="check-icon" /> 
+                    <span>{r}</span>
+                  </li>
                 ))}
               </ul>
             </div>
 
             {/* ONE-ACTIVE-SCHOLARSHIP CONFLICT ALERT */}
             {verdict.hasActiveConflict && (
-              <div className="conflict-alert-box">
-                <div className="conflict-alert-title">
-                  <AlertTriangle size={18} className="amber-alert-icon" />
-                  <span>MoTA One-Active-Scholarship Conflict Detected</span>
+              <div className="conflict-box">
+                <div className="conflict-header">
+                  <AlertTriangle size={18} className="conflict-icon" />
+                  <span>MoTA One-Active-Scholarship Rule Conflict</span>
                 </div>
-                <p className="conflict-alert-text">
-                  Student <strong>{activeStudent.name}</strong> currently holds an active grant for{' '}
+                <p className="conflict-body">
+                  Student <strong>{activeStudent?.name}</strong> currently holds an active grant for{' '}
                   <strong>{verdict.activeSchemeObj?.name}</strong> (App ID: {verdict.activeApp?.id}). 
-                  Under Central MoTA Guidelines, duplicate simultaneous scholarships are prohibited.
+                  MoTA guidelines prohibit simultaneous active scholarships.
                 </p>
-                <div className="conflict-resolution-action">
-                  <button 
-                    className="btn btn-warning btn-sm"
-                    onClick={() => onTriggerConflict(verdict.scheme.id)}
-                  >
-                    Open Automated NOC & Switch Wizard <ArrowRight size={14} />
-                  </button>
-                </div>
+                <button 
+                  className="btn btn-warning btn-sm conflict-btn"
+                  onClick={() => onTriggerConflict(verdict.scheme.id)}
+                >
+                  <span>Open Automated NOC & Switch Wizard</span>
+                  <ArrowRight size={14} />
+                </button>
               </div>
             )}
 
             {!verdict.hasActiveConflict && (
-              <div className="no-conflict-box">
-                <ShieldCheck size={18} className="green-chk" />
-                <span>Zero Conflict: Student has no conflicting active grants. Eligible to apply directly.</span>
+              <div className="no-conflict-badge">
+                <ShieldCheck size={18} className="shield-icon" />
+                <span>Zero Conflict: Student is clear to apply with no active overlapping grants.</span>
               </div>
             )}
 
             {/* Action Buttons */}
-            <div className="result-actions">
+            <div className="result-actions-row">
               <button 
                 className="btn btn-primary btn-full"
                 onClick={() => onTriggerConflict(verdict.scheme.id)}
               >
-                Proceed with DigiLocker Pre-filled Application <ArrowRight size={16} />
+                <span>Apply with DigiLocker Pre-filled Data</span>
+                <ArrowRight size={16} />
               </button>
             </div>
           </div>
 
           {/* Verification Readiness Wallet */}
-          <div className="gov-card auto-verify-readiness">
-            <h4><ShieldCheck size={16} /> Digital Document Wallet Readiness</h4>
-            <p className="readiness-sub">
-              Your verified credentials stored in TRISHA will be auto-attached:
+          <div className="gov-card readiness-card">
+            <h4 className="readiness-title">
+              <ShieldCheck size={16} /> DigiLocker & APAAR Wallet Readiness
+            </h4>
+            <p className="readiness-text">
+              Verified digital credentials stored in TRISHA will be automatically linked to this application:
             </p>
-            <div className="readiness-chips">
-              <span className="ready-chip"><CheckCircle2 size={12} /> Aadhaar (UIDAI e-KYC)</span>
-              <span className="ready-chip"><CheckCircle2 size={12} /> ST Certificate (State e-District)</span>
-              <span className="ready-chip"><CheckCircle2 size={12} /> APAAR Academic Credit Record</span>
-              <span className="ready-chip"><CheckCircle2 size={12} /> Bank Passbook (PFMS DBT Linked)</span>
+            <div className="readiness-grid">
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> Aadhaar (UIDAI e-KYC)</div>
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> ST Certificate (e-District)</div>
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> APAAR Academic Record</div>
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> Bank Account (PFMS DBT)</div>
             </div>
           </div>
         </div>
