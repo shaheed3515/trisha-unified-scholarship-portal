@@ -248,3 +248,18 @@
     max-width: 95%;
   }
 }
+
+@media (max-width: 640px) {
+  .quick-prompt-chips {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 6px;
+    width: 100%;
+  }
+  .chip-btn {
+    flex-shrink: 0;
+  }
+  .chat-input-bar {
+    gap: 8px;
+  }
+}

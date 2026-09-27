@@ -388,3 +388,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .app-selector-pills {
+    overflow-x: auto;
+    padding-bottom: 6px;
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .timeline-header button {
+    width: 100%;
+    justify-content: center;
+  }
+  .stage-item {
+    gap: 12px;
+  }
+}

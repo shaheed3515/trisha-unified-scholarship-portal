@@ -470,20 +470,57 @@
     width: 100%;
     flex-direction: column;
   }
-  .conflict-interactive-actions button {
-    width: 100%;
-  }
 }
 
 @media (max-width: 640px) {
+  .student-hero-banner {
+    padding: 18px 16px;
+  }
+  .hero-student-name {
+    font-size: 20px;
+  }
+  .family-aggregate-box {
+    padding: 14px 16px;
+  }
   .stats-metric-grid {
     grid-template-columns: 1fr;
   }
   .deficiency-banner {
     flex-direction: column;
     align-items: flex-start;
+    padding: 16px;
+  }
+  .def-action-btn {
+    width: 100%;
+  }
+  .section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .section-header-row button {
+    width: 100%;
+    justify-content: center;
+  }
+  .app-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .app-status-badge-wrap {
+    align-items: flex-start;
+    width: 100%;
   }
   .dbt-meta-grid {
     grid-template-columns: 1fr;
+  }
+  .app-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .app-card-footer button {
+    width: 100%;
+    justify-content: center;
   }
 }

@@ -81,9 +81,10 @@ export default function Dashboard({
               <button 
                 className="btn btn-sm btn-secondary aggregate-btn"
                 onClick={() => onNavigate('family')}
+                aria-label="View household scholarship pool and sibling breakdown"
               >
                 <span>Household View</span>
-                <ChevronRight size={14} />
+                <ChevronRight size={14} aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -94,7 +95,7 @@ export default function Dashboard({
       {actionRequiredApp && (
         <aside className="deficiency-banner card-interactive" aria-label="Action Required Notification">
           <div className="def-icon-wrap">
-            <AlertTriangle size={24} />
+            <AlertTriangle size={24} aria-hidden="true" />
           </div>
           <div className="def-info">
             <div className="def-header-row">
@@ -107,8 +108,9 @@ export default function Dashboard({
           <button 
             className="btn btn-warning def-action-btn"
             onClick={() => onResolveDeficiency(actionRequiredApp.id)}
+            aria-label={`Resolve deficiency: ${actionRequiredApp.deficiencies[0]?.title || 'Verify documents'}`}
           >
-            <ShieldCheck size={16} />
+            <ShieldCheck size={16} aria-hidden="true" />
             <span>{actionRequiredApp.deficiencies[0]?.actionLabel || 'Resolve via DigiLocker'}</span>
           </button>
         </aside>
@@ -164,9 +166,13 @@ export default function Dashboard({
             <h2 className="section-title">Unified Scholarship Portfolio (MoTA)</h2>
             <p className="section-sub">Single view correlating applications across NSP, SFMP (Canara Bank), and NOS</p>
           </div>
-          <button className="btn btn-secondary btn-sm" onClick={() => onNavigate('schemes')}>
+          <button 
+            className="btn btn-secondary btn-sm" 
+            onClick={() => onNavigate('schemes')}
+            aria-label="Explore all 5 Ministry of Tribal Affairs scholarship schemes"
+          >
             <span>Explore All 5 Schemes</span>
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </button>
         </div>
 
@@ -188,7 +194,7 @@ export default function Dashboard({
 
                   <div className="app-status-badge-wrap">
                     <span className={`badge ${app.status === 'disbursed' ? 'badge-success' : app.status === 'action_required' ? 'badge-warning' : 'badge-primary'}`}>
-                      {app.status === 'disbursed' ? <CheckCircle2 size={13} /> : <Clock size={13} />}
+                      {app.status === 'disbursed' ? <CheckCircle2 size={13} aria-hidden="true" /> : <Clock size={13} aria-hidden="true" />}
                       {app.statusText}
                     </span>
                     <div className="sanction-amount-pill">{app.sanctionAmount}</div>
@@ -221,7 +227,7 @@ export default function Dashboard({
                   <div className="dbt-receipt-card">
                     <div className="dbt-card-header">
                       <div className="dbt-header-title">
-                        <Banknote size={16} />
+                        <Banknote size={16} aria-hidden="true" />
                         <span>Public Financial Management System (PFMS) Remittance Confirmation</span>
                       </div>
                       <span className="badge badge-success">PFMS Validated</span>
@@ -256,9 +262,10 @@ export default function Dashboard({
                   <button 
                     className="btn btn-secondary btn-sm"
                     onClick={() => onNavigate('tracker')}
+                    aria-label={`View full verification timeline for application ${app.id}`}
                   >
                     <span>Full Verification Timeline</span>
-                    <ChevronRight size={14} />
+                    <ChevronRight size={14} aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -268,11 +275,11 @@ export default function Dashboard({
       </section>
 
       {/* Cross-Scheme Eligibility & Anti-Double Dipping Demonstration Box */}
-      <section className="conflict-demo-section gov-card">
+      <section className="conflict-demo-section gov-card" aria-label="MoTA Deduplication Guard Demonstration">
         <div className="conflict-demo-header">
           <div className="conflict-demo-title-group">
             <div className="conflict-icon-wrap">
-              <Award size={22} />
+              <Award size={22} aria-hidden="true" />
             </div>
             <div>
               <h3 className="conflict-demo-heading">Test MoTA Cross-Scheme Deduplication Guard</h3>
@@ -288,16 +295,18 @@ export default function Dashboard({
           <button 
             className="btn btn-saffron"
             onClick={() => onTriggerConflict('nfst')}
+            aria-label="Simulate applying to NFST Fellowship via SFMP to test conflict"
           >
-            <AlertTriangle size={16} />
+            <AlertTriangle size={16} aria-hidden="true" />
             <span>Simulate Applying to NFST Fellowship (SFMP)</span>
           </button>
 
           <button 
             className="btn btn-secondary"
             onClick={() => onTriggerConflict('top-class')}
+            aria-label="Simulate applying to Top-Class scheme to test transition audit"
           >
-            <ShieldCheck size={16} />
+            <ShieldCheck size={16} aria-hidden="true" />
             <span>Simulate Top-Class Transition Audit</span>
           </button>
         </div>

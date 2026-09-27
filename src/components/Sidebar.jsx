@@ -76,7 +76,7 @@ export default function Sidebar({
       )}
 
       {/* Main Navigation */}
-      <nav className="sidebar-nav">
+      <nav className="sidebar-nav" aria-label="Desktop Primary Navigation">
         <div className="nav-section-label">{!collapsed && 'Main Menu'}</div>
         {mainNavItems.map(item => {
           const Icon = item.icon
@@ -87,10 +87,16 @@ export default function Sidebar({
               className={`sidebar-nav-btn ${isActive ? 'active-sidebar-btn' : ''}`}
               onClick={() => setActiveTab(item.id)}
               title={collapsed ? item.label : undefined}
+              aria-label={`${item.label} navigation tab${isActive ? ', currently active' : ''}`}
+              aria-current={isActive ? 'page' : undefined}
             >
-              <Icon size={20} className="sidebar-nav-icon" />
+              <Icon size={20} className="sidebar-nav-icon" aria-hidden="true" />
               {!collapsed && <span className="sidebar-nav-label">{item.label}</span>}
-              {item.badge && <span className="sidebar-badge">{item.badge}</span>}
+              {item.badge && (
+                <span className="sidebar-badge" aria-label={`${item.badge} pending actions`}>
+                  {item.badge}
+                </span>
+              )}
             </button>
           )
         })}
@@ -107,10 +113,12 @@ export default function Sidebar({
               className={`sidebar-nav-btn ai-nav-btn ${isActive ? 'active-sidebar-btn' : ''}`}
               onClick={() => setActiveTab(item.id)}
               title={collapsed ? item.label : undefined}
+              aria-label={`${item.label} navigation tab${isActive ? ', currently active' : ''}`}
+              aria-current={isActive ? 'page' : undefined}
             >
-              <Icon size={20} className="sidebar-nav-icon" />
+              <Icon size={20} className="sidebar-nav-icon" aria-hidden="true" />
               {!collapsed && <span className="sidebar-nav-label">{item.label}</span>}
-              {item.isAI && !collapsed && <Sparkles size={13} className="ai-sparkle-sidebar" />}
+              {item.isAI && !collapsed && <Sparkles size={13} className="ai-sparkle-sidebar" aria-hidden="true" />}
             </button>
           )
         })}
@@ -118,8 +126,12 @@ export default function Sidebar({
 
       {/* Sidebar Footer Actions */}
       <div className="sidebar-footer">
-        <button className="sidebar-nav-btn footer-btn" title={collapsed ? 'Help & Support' : undefined}>
-          <HelpCircle size={18} className="sidebar-nav-icon" />
+        <button 
+          className="sidebar-nav-btn footer-btn" 
+          title={collapsed ? 'Help & Support' : undefined}
+          aria-label="Help & Support documentation"
+        >
+          <HelpCircle size={18} className="sidebar-nav-icon" aria-hidden="true" />
           {!collapsed && <span className="sidebar-nav-label">Help & Support</span>}
         </button>
 
@@ -127,8 +139,9 @@ export default function Sidebar({
           className="sidebar-collapse-btn"
           onClick={() => setCollapsed(!collapsed)}
           title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          aria-label={collapsed ? "Expand sidebar navigation" : "Collapse sidebar navigation"}
         >
-          {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+          {collapsed ? <ChevronRight size={18} aria-hidden="true" /> : <ChevronLeft size={18} aria-hidden="true" />}
           {!collapsed && <span>Collapse</span>}
         </button>
       </div>

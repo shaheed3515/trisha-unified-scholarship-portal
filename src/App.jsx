@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
+import MobileNav from './components/MobileNav'
 import OfflineBanner from './components/OfflineBanner'
 import ConflictModal from './components/ConflictModal'
 import Dashboard from './pages/Dashboard'
@@ -204,6 +205,14 @@ export default function App() {
         </main>
       </div>
 
+      {/* Mobile Bottom Navigation */}
+      <MobileNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        lang={lang}
+        deficiencyCount={deficiencyCount}
+      />
+
       {/* Conflict Modal */}
       {conflictData && conflictTargetScheme && (
         <ConflictModal
@@ -217,18 +226,22 @@ export default function App() {
 
       {/* Notifications Drawer */}
       {showNotificationsDrawer && (
-        <div className="modal-overlay fade-in" onClick={() => setShowNotificationsDrawer(false)}>
-          <div className="notifications-drawer" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-overlay fade-in" onClick={() => setShowNotificationsDrawer(false)} role="presentation">
+          <div className="notifications-drawer" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="MoTA Notifications">
             <div className="drawer-header">
               <div className="drawer-title-row">
-                <Bell size={18} />
+                <Bell size={18} aria-hidden="true" />
                 <h2>MoTA Notifications</h2>
               </div>
-              <button className="close-btn" onClick={() => setShowNotificationsDrawer(false)}>
-                <X size={18} />
+              <button 
+                className="close-btn" 
+                onClick={() => setShowNotificationsDrawer(false)}
+                aria-label="Close notifications drawer"
+              >
+                <X size={18} aria-hidden="true" />
               </button>
             </div>
-            <div className="drawer-list">
+            <div className="drawer-list" role="region" aria-label="Notification list">
               {notifications.map(n => (
                 <div key={n.id} className={`drawer-notif notif-${n.type}`}>
                   <div className="notif-head">
@@ -242,6 +255,7 @@ export default function App() {
             <button
               className="btn btn-secondary btn-full"
               onClick={() => { setNotifications(prev => prev.map(n => ({ ...n, read: true }))); setShowNotificationsDrawer(false); addToast('All read', 'info'); }}
+              aria-label="Mark all notifications as read"
             >
               Mark All as Read
             </button>
@@ -250,12 +264,18 @@ export default function App() {
       )}
 
       {/* Toast Stack */}
-      <div className="toast-stack" aria-live="polite">
+      <div className="toast-stack" aria-live="polite" aria-atomic="true">
         {toasts.map(toast => (
-          <div key={toast.id} className={`toast-item toast-${toast.type} fade-in`}>
-            {toast.type === 'success' ? <CheckCircle2 size={16} /> : toast.type === 'warning' ? <AlertTriangle size={16} /> : <Info size={16} />}
+          <div key={toast.id} className={`toast-item toast-${toast.type} fade-in`} role="status">
+            {toast.type === 'success' ? <CheckCircle2 size={16} aria-hidden="true" /> : toast.type === 'warning' ? <AlertTriangle size={16} aria-hidden="true" /> : <Info size={16} aria-hidden="true" />}
             <span className="toast-msg">{toast.message}</span>
-            <button className="toast-x" onClick={() => setToasts(t => t.filter(x => x.id !== toast.id))}><X size={13} /></button>
+            <button 
+              className="toast-x" 
+              onClick={() => setToasts(t => t.filter(x => x.id !== toast.id))}
+              aria-label="Dismiss toast message"
+            >
+              <X size={13} aria-hidden="true" />
+            </button>
           </div>
         ))}
       </div>

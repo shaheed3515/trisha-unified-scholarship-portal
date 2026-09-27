@@ -60,44 +60,53 @@ export default function SchemesPage({
         </div>
 
         {/* Search & Filter Toolbar */}
-        <div className="schemes-toolbar">
+        <div className="schemes-toolbar" role="search" aria-label="Scheme search and filtering">
           <div className="search-input-box">
-            <Search size={18} className="search-icon" />
+            <Search size={18} className="search-icon" aria-hidden="true" />
             <input 
               type="text" 
               placeholder="Search by scheme name, course, institution type..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="scheme-search-field"
+              aria-label="Search by scheme name, course, or institution type"
             />
           </div>
 
-          <div className="portal-filter-tabs">
+          <div className="portal-filter-tabs" role="group" aria-label="Filter schemes by portal">
             <button 
               className={`filter-btn ${filterPortal === 'ALL' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('ALL')}
+              aria-pressed={filterPortal === 'ALL'}
+              aria-label="Show all 5 schemes"
             >
               All 5 Schemes
             </button>
             <button 
               className={`filter-btn ${filterPortal === 'NSP' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('NSP')}
+              aria-pressed={filterPortal === 'NSP'}
+              aria-label="Filter by National Scholarship Portal schemes"
             >
-              <Landmark size={14} />
+              <Landmark size={14} aria-hidden="true" />
               <span>NSP (School & College)</span>
             </button>
             <button 
               className={`filter-btn ${filterPortal === 'SFMP' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('SFMP')}
+              aria-pressed={filterPortal === 'SFMP'}
+              aria-label="Filter by SFMP Canara Bank and NFST schemes"
             >
-              <Building2 size={14} />
+              <Building2 size={14} aria-hidden="true" />
               <span>SFMP (Canara Bank / NFST)</span>
             </button>
             <button 
               className={`filter-btn ${filterPortal === 'NOS' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('NOS')}
+              aria-pressed={filterPortal === 'NOS'}
+              aria-label="Filter by National Overseas Scholarship scheme"
             >
-              <Globe size={14} />
+              <Globe size={14} aria-hidden="true" />
               <span>NOS (Overseas Study)</span>
             </button>
           </div>

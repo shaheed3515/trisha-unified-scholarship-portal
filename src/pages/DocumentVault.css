@@ -277,3 +277,20 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .doc-card-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .doc-card-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+  .preview-modal-actions {
+    flex-direction: column;
+  }
+  .preview-modal-actions button {
+    width: 100%;
+  }
+}
