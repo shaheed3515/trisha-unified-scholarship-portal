@@ -137,8 +137,8 @@ export default function ApplicationTracker({
               <div className="def-card-top">
                 <AlertTriangle size={20} className="def-warning-icon" />
                 <div>
-                  <h3 className="def-card-title">{t.stateNodalQuery || 'State Nodal Officer Query / Deficiency'}</h3>
-                  <p className="def-card-desc">{selectedApp.deficiencies[0]?.detail}</p>
+                  <h3 className="def-card-title">{t.incomeCertRequired || t.stateNodalQuery}</h3>
+                  <p className="def-card-desc">{t.deficiencyDetail}</p>
                 </div>
               </div>
 

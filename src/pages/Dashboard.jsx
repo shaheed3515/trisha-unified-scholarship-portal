@@ -137,8 +137,8 @@ export default function Dashboard({
               <span className="badge badge-warning">{t.actionRequiredBadge}</span>
               <span className="def-app-code">{actionRequiredApp.id} ({actionRequiredApp.portal})</span>
             </div>
-            <div className="def-title">{actionRequiredApp.deficiencies[0]?.title || t.incomeCertRequired}</div>
-            <div className="def-detail">{actionRequiredApp.deficiencies[0]?.detail || t.deficiencyDetail}</div>
+            <div className="def-title">{t.incomeCertRequired}</div>
+            <div className="def-detail">{t.deficiencyDetail}</div>
           </div>
           <button 
             className="btn btn-warning def-action-btn"
