@@ -22,13 +22,13 @@ export default function MobileNav({ activeTab, setActiveTab, lang, setLang, defi
 
   // Short, clean labels for mobile to completely prevent text wrapping or overlapping
   const LABELS = {
-    en: { home: 'Home', schemes: 'Schemes', eligibility: 'Eligibility', tracker: 'Tracker', sahayak: 'Sahayak', more: 'More', vault: 'Document Vault', family: 'Household' },
-    hi: { home: 'होम', schemes: 'योजनाएं', eligibility: 'पात्रता', tracker: 'ट्रैकर', sahayak: 'सहायक', more: 'अन्य', vault: 'दस्तावेज़ वॉल्ट', family: 'परिवार' },
-    santhali: { home: 'ᱢᱩᱬᱩᱛ', schemes: 'ᱟᱸᱪᱚᱱ', eligibility: 'ᱞᱟᱭᱚᱠ', tracker: 'ᱦᱟᱞᱚᱛ', sahayak: 'ᱜᱚᱲᱚ', more: 'ᱮᱴᱟᱜ', vault: 'ᱰᱤᱡᱤᱞᱚᱠᱟᱨ', family: 'ᱜᱷᱟᱨᱚᱸᱡᱽ' },
-    gondi: { home: 'मुखड़ा', schemes: 'योजना', eligibility: 'जांच', tracker: 'हाल', sahayak: 'संगी', more: 'अउर', vault: 'कागद पत्र', family: 'कुटुम' },
-    ho: { home: 'ᱢᱩᱬ', schemes: 'ᱥᱠᱤᱢ', eligibility: 'ᱯᱟᱸᱡᱟ', tracker: 'ᱛᱩᱞᱟᱹ', sahayak: 'ᱜᱚᱲᱚ', more: 'ᱮᱴᱟᱜ', vault: 'ᱰᱤᱡᱤᱞᱚᱠᱟᱨ', family: 'ᱚᱲᱟᱜ' },
-    bodo: { home: 'गाहाय', schemes: 'अनसुंथाइ', eligibility: 'पात्रता', tracker: 'नायगिर', sahayak: 'मदद', more: 'गुबुन', vault: 'लेखा', family: 'नखर' },
-    kui: { home: 'ମୁଖ୍ୟ', schemes: 'ଯୋଜନା', eligibility: 'ଯୋଗ୍ୟତା', tracker: 'ସ୍ଥିତି', sahayak: 'ସହାୟକ', more: 'ଅନ୍ୟ', vault: 'ଡିଜିଲକର', family: 'କୁଟୁମ୍ବ' }
+    en: { home: 'Home', schemes: 'Schemes', eligibility: 'Eligibility', tracker: 'Tracker', sahayak: 'Sahayak', more: 'More', vault: 'Document Vault', family: 'Household', services: 'Additional MoTA Services' },
+    hi: { home: 'होम', schemes: 'योजनाएं', eligibility: 'पात्रता', tracker: 'ट्रैकर', sahayak: 'सहायक', more: 'अन्य', vault: 'दस्तावेज़ वॉल्ट', family: 'परिवार', services: 'अतिरिक्त सेवाएं' },
+    santhali: { home: 'ᱢᱩᱬᱩᱛ', schemes: 'ᱟᱸᱪᱚᱱ', eligibility: 'ᱞᱟᱭᱚᱠ', tracker: 'ᱦᱟᱞᱚᱛ', sahayak: 'ᱜᱚᱲᱚ', more: 'ᱮᱴᱟᱜ', vault: 'ᱰᱤᱡᱤᱞᱚᱠᱟᱨ', family: 'ᱜᱷᱟᱨᱚᱸᱡᱽ', services: 'ᱮᱴᱟᱜ ᱥᱮᱵᱟ' },
+    gondi: { home: 'मुखड़ा', schemes: 'योजना', eligibility: 'जांच', tracker: 'हाल', sahayak: 'संगी', more: 'अउर', vault: 'कागद पत्र', family: 'कुटुम', services: 'अउर सेवा' },
+    ho: { home: 'ᱢᱩᱬ', schemes: 'ᱥᱠᱤᱢ', eligibility: 'ᱯᱟᱸᱡᱟ', tracker: 'ᱛᱩᱞᱟᱹ', sahayak: 'ᱜᱚᱲᱚ', more: 'ᱮᱴᱟᱜ', vault: 'ᱰᱤᱡᱤᱞᱚᱠᱟᱨ', family: 'ᱚᱲᱟᱜ', services: 'ᱮᱴᱟᱜ ᱥᱮᱵᱟ' },
+    bodo: { home: 'गाहाय', schemes: 'अनसुंथाइ', eligibility: 'पात्रता', tracker: 'नायगिर', sahayak: 'मदद', more: 'गुबुन', vault: 'लेखा', family: 'नखर', services: 'गुबुन सेवा' },
+    kui: { home: 'ମୁଖ୍ୟ', schemes: 'ଯୋଜନା', eligibility: 'ଯୋଗ୍ୟତା', tracker: 'ସ୍ଥିତି', sahayak: 'ସହାୟକ', more: 'ଅନ୍ୟ', vault: 'ଡିଜିଲକର', family: 'କୁଟୁମ୍ବ', services: 'ଅନ୍ୟ ସେବା' }
   }
 
   const l = LABELS[lang] || LABELS.en
@@ -44,8 +44,8 @@ export default function MobileNav({ activeTab, setActiveTab, lang, setLang, defi
 
   // Extra features inside "More" Sheet
   const secondaryTabs = [
-    { id: 'documents', label: 'DigiLocker Document Vault', sub: 'Verified Credentials & Academic Records', icon: ShieldCheck },
-    { id: 'family', label: 'Household & Sibling View', sub: 'Track Multi-Child Family Grants', icon: Users }
+    { id: 'documents', label: l.vault, sub: t.vaultSub || 'Verified Credentials & Academic Records', icon: ShieldCheck },
+    { id: 'family', label: l.family, sub: t.portfolioSub || 'Track Multi-Child Family Grants', icon: Users }
   ]
 
   const isMoreActive = activeTab === 'documents' || activeTab === 'family'
@@ -102,7 +102,7 @@ export default function MobileNav({ activeTab, setActiveTab, lang, setLang, defi
           <div className="more-sheet-content" onClick={(e) => e.stopPropagation()}>
             <div className="sheet-drag-handle" />
             <div className="sheet-header">
-              <h3>Additional MoTA Services</h3>
+              <h3>{l.services}</h3>
               <button className="sheet-close-btn" onClick={() => setShowMoreSheet(false)}>
                 <X size={18} />
               </button>

@@ -12,24 +12,26 @@ import {
   Clock,
   Sparkles
 } from 'lucide-react'
-import { SCHEMES } from '../data/scholarshipData'
+import { SCHEMES, I18N } from '../data/scholarshipData'
 import './FamilyOverview.css'
 
 export default function FamilyOverview({ 
   household, 
   activeStudent, 
+  lang,
   onSelectStudent, 
   onToast 
 }) {
   const [showAddModal, setShowAddModal] = useState(false)
   const [newChildName, setNewChildName] = useState('')
   const [newChildClass, setNewChildClass] = useState('Class IX (EMRS School)')
+  const t = I18N[lang] || I18N.en
 
   const handleAddMember = (e) => {
     e.preventDefault()
     if (!newChildName.trim()) return
     setShowAddModal(false)
-    onToast(`Added ${newChildName} to Family Registry HH-JH-2023-90812`, 'success')
+    onToast(`Added ${newChildName} to Family Registry ${household.householdId}`, 'success')
     setNewChildName('')
   }
 
@@ -39,25 +41,25 @@ export default function FamilyOverview({
       <section className="gov-card family-head-card">
         <div className="head-info-col">
           <div className="family-badges-row">
-            <span className="badge badge-primary">MoTA Unified Tribal Family Registry</span>
-            <span className="badge badge-neutral">Ration Card: {household.rationCardNumber}</span>
+            <span className="badge badge-primary">{t.familyRegistry || 'MoTA Unified Tribal Family Registry'}</span>
+            <span className="badge badge-neutral">{t.rationCard || 'Ration Card:'} {household.rationCardNumber}</span>
           </div>
 
           <h1 className="family-household-title">
-            {household.headOfHousehold}'s Household ({household.tribalGroup})
+            {household.headOfHousehold}'s {t.household || 'Household'} ({household.tribalGroup})
           </h1>
 
           <div className="family-loc-row">
             <MapPin size={15} />
-            <span>{household.village}, District {household.district}, {household.state}</span>
+            <span>{household.village}, {t.village || 'District'} {household.district}, {household.state}</span>
           </div>
         </div>
 
         <div className="family-stat-boxes">
           <div className="stat-pill-box">
-            <span className="pill-box-label">Total Household DBT Received</span>
+            <span className="pill-box-label">{t.totalHouseholdDbt || 'Total Household DBT Received'}</span>
             <span className="pill-box-val">{household.totalDisbursedToHousehold}</span>
-            <span className="pill-box-sub">Across 5 MoTA Schemes</span>
+            <span className="pill-box-sub">{t.across5Schemes || 'Across 5 MoTA Schemes'}</span>
           </div>
 
           <button 
@@ -65,7 +67,7 @@ export default function FamilyOverview({
             onClick={() => setShowAddModal(true)}
           >
             <Plus size={16} />
-            <span>Register Child / Sibling</span>
+            <span>{t.addSiblingBtn || 'Register Child / Sibling'}</span>
           </button>
         </div>
       </section>
@@ -74,9 +76,9 @@ export default function FamilyOverview({
       <section className="members-section">
         <div className="section-head-row">
           <div>
-            <h2 className="section-heading">Children in Household & Active Scholarships</h2>
+            <h2 className="section-heading">{t.registeredChildren || 'Children in Household & Active Scholarships'}</h2>
             <p className="section-desc">
-              Track scholarship lifecycle and verification progress for every child in the family from a single dashboard.
+              {t.portfolioSub || 'Track scholarship lifecycle and verification progress for every child in the family from a single dashboard.'}
             </p>
           </div>
         </div>
@@ -86,6 +88,7 @@ export default function FamilyOverview({
             const isCurrentlySelected = member.id === activeStudent.id
             const activeApp = member.applications?.[0]
             const activeSchemeMeta = SCHEMES.find(s => s.id === activeApp?.schemeId)
+            const memberDisplayName = (lang === 'hi' && member.nameHi) ? member.nameHi : member.name
 
             return (
               <div 
@@ -96,8 +99,8 @@ export default function FamilyOverview({
                   <div className="child-avatar-wrap">{member.avatarInitials}</div>
                   <div className="child-meta-wrap">
                     <div className="child-name-row">
-                      <h3 className="child-name">{member.name}</h3>
-                      {member.isPrimary && <span className="badge badge-primary">Primary</span>}
+                      <h3 className="child-name">{memberDisplayName}</h3>
+                      {member.isPrimary && <span className="badge badge-primary">{t.primaryScholar || 'Primary'}</span>}
                     </div>
                     <div className="child-relation">{member.relation} • {member.educationLevel}</div>
                     <div className="child-inst">
@@ -115,20 +118,20 @@ export default function FamilyOverview({
                         <span className="badge badge-neutral">{activeApp.portal}</span>
                         <span className={`badge ${activeApp.status === 'disbursed' ? 'badge-success' : 'badge-warning'}`}>
                           {activeApp.status === 'disbursed' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
-                          {activeApp.statusText}
+                          {lang === 'hi' ? (activeApp.status === 'disbursed' ? 'छात्र बैंक खाते में डीबीटी राशि जमा' : activeApp.statusText) : activeApp.statusText}
                         </span>
                       </div>
-                      <div className="child-scheme-title">{activeSchemeMeta?.name}</div>
+                      <div className="child-scheme-title">{(lang === 'hi' && activeSchemeMeta?.nameHi) ? activeSchemeMeta.nameHi : (activeSchemeMeta?.name || activeApp.schemeId)}</div>
                       <div className="child-dbt-amount">
-                        Sanctioned: <strong>{activeApp.sanctionAmount}</strong>
+                        {t.disbursedAmount || 'Sanctioned:'} <strong>{activeApp.sanctionAmount}</strong>
                       </div>
                     </>
                   ) : (
                     <div className="no-active-scheme-notice">
                       <GraduationCap size={20} className="notice-icon" />
                       <div>
-                        <strong>Eligible for NFST Doctoral Fellowship</strong>
-                        <p>No active scholarship currently availed. Student is eligible to apply.</p>
+                        <strong>{t.currentGrant || 'Eligible for NFST Doctoral Fellowship'}</strong>
+                        <p>{t.switchMemberOrExplore || 'No active scholarship currently availed. Student is eligible to apply.'}</p>
                       </div>
                     </div>
                   )}
@@ -141,7 +144,7 @@ export default function FamilyOverview({
                     className={`btn btn-sm ${isCurrentlySelected ? 'btn-primary' : 'btn-secondary'}`}
                     onClick={() => onSelectStudent(member)}
                   >
-                    <span>{isCurrentlySelected ? 'Currently Viewing' : 'Switch Focus to this Child'}</span>
+                    <span>{isCurrentlySelected ? (t.activeStudentBadge || 'Currently Viewing') : (t.switchStudent || 'Switch Focus to this Child')}</span>
                     <ArrowRight size={14} />
                   </button>
                 </div>
@@ -155,14 +158,14 @@ export default function FamilyOverview({
       {showAddModal && (
         <div className="modal-overlay fade-in">
           <div className="modal-content add-child-modal gov-card">
-            <h2 className="modal-heading">Register Sibling to Household Pool</h2>
+            <h2 className="modal-heading">{t.addMemberModalTitle || 'Register Sibling to Household Pool'}</h2>
             <p className="modal-sub">
-              Link another child to Ration Card {household.rationCardNumber} for unified tribal scholarship tracking.
+              {t.rationCard || 'Link another child to Ration Card'} {household.rationCardNumber}
             </p>
 
             <form onSubmit={handleAddMember} className="add-child-form">
               <div className="form-group">
-                <label className="form-label">Child Full Name (as per Aadhaar)</label>
+                <label className="form-label">{t.childFullName || 'Child Full Name (as per Aadhaar)'}</label>
                 <input 
                   type="text" 
                   required
@@ -174,7 +177,7 @@ export default function FamilyOverview({
               </div>
 
               <div className="form-group">
-                <label className="form-label">Current Academic Level & School</label>
+                <label className="form-label">{t.currentClassLevel || 'Current Academic Level & School'}</label>
                 <select 
                   value={newChildClass}
                   onChange={(e) => setNewChildClass(e.target.value)}
@@ -189,11 +192,11 @@ export default function FamilyOverview({
 
               <div className="modal-actions-row">
                 <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>
-                  Cancel
+                  {t.cancel || 'Cancel'}
                 </button>
                 <button type="submit" className="btn btn-primary">
                   <ShieldCheck size={16} />
-                  <span>Verify via DigiLocker & Add</span>
+                  <span>{t.addToRegistry || 'Verify via DigiLocker & Add'}</span>
                 </button>
               </div>
             </form>

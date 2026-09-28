@@ -12,26 +12,30 @@ import {
   ExternalLink,
   ChevronRight
 } from 'lucide-react'
-import { SCHEMES } from '../data/scholarshipData'
+import { SCHEMES, I18N } from '../data/scholarshipData'
 import './ApplicationTracker.css'
 
 export default function ApplicationTracker({ 
   activeStudent, 
+  lang,
   onResolveDeficiency,
   onDownloadSlip 
 }) {
+  const t = I18N[lang] || I18N.en
   const applications = activeStudent.applications || []
   const [selectedAppId, setSelectedAppId] = useState(applications[0]?.id || null)
 
   const selectedApp = applications.find(a => a.id === selectedAppId) || applications[0]
   const schemeMeta = SCHEMES.find(s => s.id === selectedApp?.schemeId) || {}
 
+  const studentDisplayName = (lang === 'hi' && activeStudent.nameHi) ? activeStudent.nameHi : activeStudent.name
+
   if (!selectedApp) {
     return (
       <div className="gov-card empty-tracker-card">
         <Clock size={32} className="empty-icon" />
-        <h3>No Active Applications Found for {activeStudent.name}</h3>
-        <p>Switch to another household member or explore all 5 schemes to apply.</p>
+        <h3>{studentDisplayName} {t.noActiveApp || 'No Active Applications Found'}</h3>
+        <p>{t.switchMemberOrExplore || 'Switch to another household member or explore all 5 schemes to apply.'}</p>
       </div>
     )
   }
@@ -40,9 +44,9 @@ export default function ApplicationTracker({
     <div className="tracker-view fade-in">
       <div className="tracker-header">
         <div>
-          <h1 className="tracker-title">End-to-End Application & Verification Tracker</h1>
+          <h1 className="tracker-title">{t.trackerTitle || 'End-to-End Application & Verification Tracker'}</h1>
           <p className="tracker-sub">
-            Real-time synchronization across Institute, State Tribal Welfare Directorate, MoTA, and PFMS
+            {t.trackerSub || 'Real-time synchronization across Institute, State Tribal Welfare Directorate, MoTA, and PFMS'}
           </p>
         </div>
 
@@ -70,12 +74,12 @@ export default function ApplicationTracker({
             <div className="timeline-header-row">
               <div>
                 <span className="badge badge-primary">{selectedApp.portal}</span>
-                <h2 className="timeline-scheme-title">{schemeMeta.name}</h2>
-                <div className="app-meta-code">Application ID: <strong>{selectedApp.id}</strong> (Session {selectedApp.academicSession})</div>
+                <h2 className="timeline-scheme-title">{(lang === 'hi' && schemeMeta.nameHi) ? schemeMeta.nameHi : (schemeMeta.name || selectedApp.schemeId)}</h2>
+                <div className="app-meta-code">{t.appId || 'Application ID:'} <strong>{selectedApp.id}</strong> ({t.session || 'Session'} {selectedApp.academicSession})</div>
               </div>
               <div className="timeline-status-tag">
                 <span className={`badge ${selectedApp.status === 'disbursed' ? 'badge-success' : 'badge-warning'}`}>
-                  {selectedApp.statusText}
+                  {lang === 'hi' ? (selectedApp.status === 'disbursed' ? 'छात्र बैंक खाते में डीबीटी राशि जमा' : selectedApp.statusText) : selectedApp.statusText}
                 </span>
               </div>
             </div>
@@ -115,7 +119,7 @@ export default function ApplicationTracker({
                       {isActive && (
                         <div className="active-stage-indicator">
                           <span className="pulse-ping" />
-                          <span>Currently Under Process by State Nodal Verification Officers</span>
+                          <span>{t.currentlyUnderProcess || 'Currently Under Process by State Nodal Verification Officers'}</span>
                         </div>
                       )}
                     </div>
@@ -131,7 +135,7 @@ export default function ApplicationTracker({
               <div className="def-card-top">
                 <AlertTriangle size={20} className="def-warning-icon" />
                 <div>
-                  <h3 className="def-card-title">State Nodal Officer Query / Deficiency</h3>
+                  <h3 className="def-card-title">{t.stateNodalQuery || 'State Nodal Officer Query / Deficiency'}</h3>
                   <p className="def-card-desc">{selectedApp.deficiencies[0]?.detail}</p>
                 </div>
               </div>
@@ -142,7 +146,7 @@ export default function ApplicationTracker({
                   onClick={() => onResolveDeficiency(selectedApp.id)}
                 >
                   <ShieldCheck size={16} />
-                  <span>Re-verify via DigiLocker Live Sync</span>
+                  <span>{t.reverifyDigilocker || 'Re-verify via DigiLocker Live Sync'}</span>
                 </button>
               </div>
             </div>
@@ -156,26 +160,26 @@ export default function ApplicationTracker({
             <div className="gov-card dbt-slip-card">
               <div className="slip-top-badge">
                 <ShieldCheck size={16} />
-                <span>Public Financial Management System</span>
+                <span>{t.pfmsFull || 'Public Financial Management System'}</span>
               </div>
 
               <div className="slip-amount-box">
-                <div className="slip-amount-label">Direct Benefit Transfer</div>
+                <div className="slip-amount-label">{t.directBenefitTransfer || 'Direct Benefit Transfer'}</div>
                 <div className="slip-amount-value">{selectedApp.dbtDetails.amountCredited}</div>
-                <div className="slip-credit-date">Credited on {selectedApp.dbtDetails.creditDate}</div>
+                <div className="slip-credit-date">{t.creditedOn || 'Credited on'} {selectedApp.dbtDetails.creditDate}</div>
               </div>
 
               <div className="slip-details-list">
                 <div className="slip-row">
-                  <span className="slip-label">Beneficiary</span>
-                  <span className="slip-val">{activeStudent.name}</span>
+                  <span className="slip-label">{t.beneficiary || 'Beneficiary'}</span>
+                  <span className="slip-val">{studentDisplayName}</span>
                 </div>
                 <div className="slip-row">
                   <span className="slip-label">Aadhaar (NPCI)</span>
                   <span className="slip-val">{activeStudent.aadhaarMasked}</span>
                 </div>
                 <div className="slip-row">
-                  <span className="slip-label">Credited Bank</span>
+                  <span className="slip-label">{t.creditedBank || 'Credited Bank'}</span>
                   <span className="slip-val">{selectedApp.dbtDetails.bankName}</span>
                 </div>
                 <div className="slip-row">
@@ -183,7 +187,7 @@ export default function ApplicationTracker({
                   <span className="slip-val">{selectedApp.dbtDetails.accountMasked}</span>
                 </div>
                 <div className="slip-row">
-                  <span className="slip-label">RBI / UTR Ref</span>
+                  <span className="slip-label">{t.utrRef || 'RBI / UTR Ref'}</span>
                   <span className="slip-val code-text">{selectedApp.dbtDetails.utrNumber}</span>
                 </div>
                 <div className="slip-row">
@@ -194,13 +198,13 @@ export default function ApplicationTracker({
 
               <button className="btn btn-secondary btn-full slip-download-btn" onClick={onDownloadSlip}>
                 <Download size={15} />
-                <span>Download Official DBT Receipt (PDF)</span>
+                <span>{t.downloadSanctionSlip || 'Download Official DBT Receipt (PDF)'}</span>
               </button>
             </div>
           ) : (
             <div className="gov-card dbt-pending-card">
               <Banknote size={28} className="dbt-pending-icon" />
-              <h3>Direct Benefit Transfer (DBT) Pending</h3>
+              <h3>{t.directBenefitTransfer || 'Direct Benefit Transfer (DBT)'} Pending</h3>
               <p>
                 Sanction amount of <strong>{selectedApp.sanctionAmount}</strong> will be 
                 credited directly into Aadhaar-seeded Bank Account via PFMS once State Tribal Welfare clearance completes.
@@ -210,10 +214,9 @@ export default function ApplicationTracker({
 
           {/* Quick Help Box */}
           <div className="gov-card nodal-help-card">
-            <h3 className="help-card-title">Need Help with this Stage?</h3>
+            <h3 className="help-card-title">{t.helpSupport || 'Need Help with this Stage?'}</h3>
             <p className="help-card-text">
-              If your application has been at the same stage for more than 15 days, 
-              use the Tribal AI Sahayak to automatically register an expedited grievance ticket with the State Welfare Director.
+              {t.allRecordsSecured || 'If your application has been at the same stage for more than 15 days, use the Tribal AI Sahayak to automatically register an expedited grievance ticket.'}
             </p>
           </div>
         </div>

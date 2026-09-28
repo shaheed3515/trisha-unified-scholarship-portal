@@ -12,12 +12,15 @@ import {
   Lock,
   X
 } from 'lucide-react'
-import { DIGILOCKER_VAULT } from '../data/scholarshipData'
+import { DIGILOCKER_VAULT, I18N } from '../data/scholarshipData'
 import './DocumentVault.css'
 
-export default function DocumentVault({ activeStudent, onToast }) {
+export default function DocumentVault({ activeStudent, lang, onToast }) {
   const [syncing, setSyncing] = useState(false)
   const [selectedDoc, setSelectedDoc] = useState(null)
+  const t = I18N[lang] || I18N.en
+
+  const studentDisplayName = (lang === 'hi' && activeStudent.nameHi) ? activeStudent.nameHi : activeStudent.name
 
   const handleSyncDigiLocker = () => {
     setSyncing(true)
@@ -33,13 +36,13 @@ export default function DocumentVault({ activeStudent, onToast }) {
         <div>
           <div className="vault-badge-row">
             <span className="badge badge-success">
-              <ShieldCheck size={13} /> DigiLocker Certified Vault
+              <ShieldCheck size={13} /> {t.digilockerCertifiedVault || 'DigiLocker Certified Vault'}
             </span>
-            <span className="badge badge-primary">Zero Manual Paper Submissions</span>
+            <span className="badge badge-primary">{t.zeroPaperSubmissions || 'Zero Manual Paper Submissions'}</span>
           </div>
-          <h1 className="vault-heading">Tribal Student Digital Document Vault</h1>
+          <h1 className="vault-heading">{t.vaultHeading || 'Tribal Student Digital Document Vault'}</h1>
           <p className="vault-sub">
-            Verified authentic records pulled from UIDAI, State e-District, UDISE+, and National Academic Depository (NAD)
+            {t.vaultSub || 'Verified authentic records pulled from UIDAI, State e-District, UDISE+, and National Academic Depository (NAD)'}
           </p>
         </div>
 
@@ -49,7 +52,7 @@ export default function DocumentVault({ activeStudent, onToast }) {
           disabled={syncing}
         >
           <RefreshCw size={16} className={syncing ? 'spinning-sync' : ''} />
-          <span>{syncing ? 'Fetching from DigiLocker...' : 'Refresh DigiLocker Sync'}</span>
+          <span>{syncing ? (t.fetchingDigilocker || 'Fetching from DigiLocker...') : (t.refreshSync || 'Refresh DigiLocker Sync')}</span>
         </button>
       </div>
 
@@ -70,21 +73,21 @@ export default function DocumentVault({ activeStudent, onToast }) {
 
             <div className="doc-details-box">
               <div className="doc-row">
-                <span className="doc-label">Certificate No.</span>
+                <span className="doc-label">{t.certNo || 'Certificate No.'}</span>
                 <span className="doc-val mono-val">{doc.certNumber}</span>
               </div>
               <div className="doc-row">
-                <span className="doc-label">Issued / Verified</span>
+                <span className="doc-label">{t.verifiedVia || 'Issued / Verified'}</span>
                 <span className="doc-val">{doc.issueDate}</span>
               </div>
               <div className="doc-row">
-                <span className="doc-label">Authenticity Status</span>
+                <span className="doc-label">{t.verifiedDoc || 'Authenticity Status'}</span>
                 <span className="doc-val verified-text">
-                  <CheckCircle2 size={13} /> Digitally Signed
+                  <CheckCircle2 size={13} /> {t.lifetimeValid || 'Digitally Signed'}
                 </span>
               </div>
               <div className="doc-row">
-                <span className="doc-label">File Size / Format</span>
+                <span className="doc-label">{t.sourcePortal || 'Format'}</span>
                 <span className="doc-val">{doc.fileSize} (PDF/A)</span>
               </div>
             </div>
@@ -95,7 +98,7 @@ export default function DocumentVault({ activeStudent, onToast }) {
                 onClick={() => setSelectedDoc(doc)}
               >
                 <Eye size={14} />
-                <span>View Certificate</span>
+                <span>{t.viewDoc || 'View Certificate'}</span>
               </button>
 
               <button 
@@ -103,7 +106,7 @@ export default function DocumentVault({ activeStudent, onToast }) {
                 onClick={() => onToast(`Downloading certified copy: ${doc.title}`, 'info')}
               >
                 <Download size={14} />
-                <span>Download</span>
+                <span>{t.downloadDoc || 'Download'}</span>
               </button>
             </div>
           </div>
@@ -116,7 +119,7 @@ export default function DocumentVault({ activeStudent, onToast }) {
           <div className="modal-content doc-preview-modal gov-card">
             <div className="preview-modal-header">
               <div className="preview-title-col">
-                <span className="badge badge-success">DigiLocker Authentic</span>
+                <span className="badge badge-success">{t.digilockerCertifiedVault || 'DigiLocker Authentic'}</span>
                 <h3 className="preview-heading">{selectedDoc.title}</h3>
                 <div className="preview-sub">{selectedDoc.issuer}</div>
               </div>
@@ -138,19 +141,19 @@ export default function DocumentVault({ activeStudent, onToast }) {
                 <p>This is to certify that according to government administrative records:</p>
                 <div className="cert-info-table">
                   <div className="cert-table-row">
-                    <span>Beneficiary Name:</span>
-                    <strong>{activeStudent.name}</strong>
+                    <span>{t.beneficiary || 'Beneficiary Name:'}</span>
+                    <strong>{studentDisplayName}</strong>
                   </div>
                   <div className="cert-table-row">
-                    <span>Document Number:</span>
+                    <span>{t.certNo || 'Document Number:'}</span>
                     <strong>{selectedDoc.certNumber}</strong>
                   </div>
                   <div className="cert-table-row">
-                    <span>Issued Authority:</span>
+                    <span>{t.issuer || 'Issued Authority:'}</span>
                     <strong>{selectedDoc.issuer}</strong>
                   </div>
                   <div className="cert-table-row">
-                    <span>Validity / Scope:</span>
+                    <span>{t.lifetimeValid || 'Validity / Scope:'}</span>
                     <strong>{selectedDoc.validity}</strong>
                   </div>
                   <div className="cert-table-row">
@@ -177,7 +180,7 @@ export default function DocumentVault({ activeStudent, onToast }) {
 
             <div className="preview-modal-actions">
               <button className="btn btn-secondary" onClick={() => setSelectedDoc(null)}>
-                Close Preview
+                {t.cancel || 'Close Preview'}
               </button>
               <button 
                 className="btn btn-primary"
@@ -187,7 +190,7 @@ export default function DocumentVault({ activeStudent, onToast }) {
                 }}
               >
                 <Download size={16} />
-                <span>Save Certified PDF Copy</span>
+                <span>{t.downloadDoc || 'Save Certified PDF Copy'}</span>
               </button>
             </div>
           </div>

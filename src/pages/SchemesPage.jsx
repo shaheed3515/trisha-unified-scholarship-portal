@@ -52,10 +52,9 @@ export default function SchemesPage({
       {/* Header & Search */}
       <section className="schemes-header-section">
         <div className="schemes-title-group">
-          <h1 className="schemes-heading">Ministry of Tribal Affairs — 5 Flagship Schemes</h1>
+          <h1 className="schemes-heading">{t.schemesHeading || 'Ministry of Tribal Affairs — 5 Flagship Schemes'}</h1>
           <p className="schemes-sub">
-            Unified directory unifying schemes across National Scholarship Portal (NSP), 
-            SFMP (Canara Bank), and standalone NOS overseas portal.
+            {t.schemesSub || 'Unified directory unifying schemes across National Scholarship Portal (NSP), SFMP (Canara Bank), and standalone NOS overseas portal.'}
           </p>
         </div>
 
@@ -65,7 +64,7 @@ export default function SchemesPage({
             <Search size={18} className="search-icon" />
             <input 
               type="text" 
-              placeholder="Search by scheme name, course, institution type..."
+              placeholder={t.searchPlaceholder || 'Search by scheme name, course, institution type...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="scheme-search-field"
@@ -77,28 +76,28 @@ export default function SchemesPage({
               className={`filter-btn ${filterPortal === 'ALL' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('ALL')}
             >
-              All 5 Schemes
+              {t.allSchemes || 'All 5 Schemes'}
             </button>
             <button 
               className={`filter-btn ${filterPortal === 'NSP' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('NSP')}
             >
               <Landmark size={14} />
-              <span>NSP (School & College)</span>
+              <span>{t.nspFilter || 'NSP (School & College)'}</span>
             </button>
             <button 
               className={`filter-btn ${filterPortal === 'SFMP' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('SFMP')}
             >
               <Building2 size={14} />
-              <span>SFMP (Canara Bank / NFST)</span>
+              <span>{t.sfmpFilter || 'SFMP (Canara Bank / NFST)'}</span>
             </button>
             <button 
               className={`filter-btn ${filterPortal === 'NOS' ? 'active-filter' : ''}`}
               onClick={() => setFilterPortal('NOS')}
             >
               <Globe size={14} />
-              <span>NOS (Overseas Study)</span>
+              <span>{t.nosFilter || 'NOS (Overseas Study)'}</span>
             </button>
           </div>
         </div>
@@ -120,27 +119,27 @@ export default function SchemesPage({
                     <span className="badge badge-neutral">{scheme.category}</span>
                     {hasActiveApp && (
                       <span className="badge badge-success">
-                        <CheckCircle2 size={13} /> Active in Profile
+                        <CheckCircle2 size={13} /> {t.activeInProfile || 'Active in Profile'}
                       </span>
                     )}
                   </div>
-                  <h2 className="scheme-name">{scheme.name}</h2>
+                  <h2 className="scheme-name">{(lang === 'hi' && scheme.nameHi) ? scheme.nameHi : scheme.name}</h2>
                   <p className="scheme-desc">{scheme.description}</p>
                 </div>
 
                 <div className="scheme-amount-col">
-                  <div className="amount-label">Annual Grant / Financial Assistance</div>
+                  <div className="amount-label">{t.annualGrant || 'Annual Grant / Financial Assistance'}</div>
                   <div className="amount-value">{scheme.amountRange}</div>
                   <div className="deadline-tag">
                     <Calendar size={13} />
-                    <span>Apply before: <strong>{scheme.deadline}</strong></span>
+                    <span>{t.applyBefore || 'Apply before:'} <strong>{scheme.deadline}</strong></span>
                   </div>
                 </div>
               </div>
 
               {/* Quick Eligibility & Highlights */}
               <div className="scheme-criteria-box">
-                <div className="criteria-header">Eligibility Highlights</div>
+                <div className="criteria-header">{t.eligibilityHighlights || 'Eligibility Highlights'}</div>
                 <div className="criteria-grid">
                   {scheme.eligibilityCriteria.slice(0, 2).map((crit, idx) => (
                     <div key={idx} className="criteria-item">
@@ -155,7 +154,7 @@ export default function SchemesPage({
               {isExpanded && (
                 <div className="scheme-expanded-details fade-in">
                   <div className="expanded-section">
-                    <h3 className="expanded-subhead">Full Eligibility Criteria (MoTA Official)</h3>
+                    <h3 className="expanded-subhead">{t.fullEligibilityOfficial || 'Full Eligibility Criteria (MoTA Official)'}</h3>
                     <ul className="expanded-list">
                       {scheme.eligibilityCriteria.map((c, i) => (
                         <li key={i}>{c}</li>
@@ -164,7 +163,7 @@ export default function SchemesPage({
                   </div>
 
                   <div className="expanded-section">
-                    <h3 className="expanded-subhead">Mandatory Verification Documents (DigiLocker Synced)</h3>
+                    <h3 className="expanded-subhead">{t.mandatoryDocs || 'Mandatory Verification Documents (DigiLocker Synced)'}</h3>
                     <div className="docs-tag-grid">
                       {scheme.mandatoryDocuments.map(doc => (
                         <div key={doc.id} className="doc-pill">
@@ -177,12 +176,12 @@ export default function SchemesPage({
                   </div>
 
                   <div className="expanded-section">
-                    <h3 className="expanded-subhead">Disbursement & Funding Framework</h3>
+                    <h3 className="expanded-subhead">{t.disbursementFramework || 'Disbursement & Funding Framework'}</h3>
                     <div className="funding-meta-row">
-                      <div>Funding Pattern: <strong>{scheme.fundingRatio}</strong></div>
-                      <div>Disbursement Frequency: <strong>{scheme.disbursementFreq}</strong></div>
-                      <div>Hosteller Allowance: <strong>{scheme.hostellerAllowance}</strong></div>
-                      <div>Grants & Books: <strong>{scheme.bookGrant}</strong></div>
+                      <div>{t.fundingPattern || 'Funding Pattern:'} <strong>{scheme.fundingRatio}</strong></div>
+                      <div>{t.disbursementFreq || 'Disbursement Frequency:'} <strong>{scheme.disbursementFreq}</strong></div>
+                      <div>{t.hostellerAllowance || 'Hosteller Allowance:'} <strong>{scheme.hostellerAllowance}</strong></div>
+                      <div>{t.grantsBooks || 'Grants & Books:'} <strong>{scheme.bookGrant}</strong></div>
                     </div>
                   </div>
                 </div>
@@ -194,14 +193,14 @@ export default function SchemesPage({
                   className="btn btn-secondary btn-sm"
                   onClick={() => setExpandedSchemeId(isExpanded ? null : scheme.id)}
                 >
-                  <span>{isExpanded ? 'Hide Guidelines' : 'View Full Guidelines & Documents'}</span>
+                  <span>{isExpanded ? (t.hideGuidelines || 'Hide Guidelines') : (t.viewFullGuidelines || 'View Full Guidelines & Documents')}</span>
                 </button>
 
                 <button 
                   className="btn btn-primary"
                   onClick={() => handleApplyClick(scheme)}
                 >
-                  <span>{hasActiveApp ? 'View Active Application' : 'Check Eligibility & Apply'}</span>
+                  <span>{hasActiveApp ? (t.viewActiveApp || 'View Active Application') : (t.checkEligibility || 'Check Eligibility & Apply')}</span>
                   <ArrowRight size={16} />
                 </button>
               </div>
