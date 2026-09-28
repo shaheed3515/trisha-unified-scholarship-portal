@@ -70,15 +70,15 @@ export default function Sidebar({
         <div className="sidebar-student-card">
           <div className="sidebar-avatar">{activeStudent.avatarInitials}</div>
           <div className="sidebar-student-info">
-            <div className="sidebar-student-name">{activeStudent.name}</div>
-            <div className="sidebar-student-level">{activeStudent.educationLevel}</div>
+            <div className="sidebar-student-name">{(lang === 'hi' && activeStudent.nameHi) ? activeStudent.nameHi : activeStudent.name}</div>
+            <div className="sidebar-student-level">{lang === 'hi' ? 'स्नातक (कॉलेज)' : activeStudent.educationLevel}</div>
           </div>
         </div>
       )}
 
       {/* Main Navigation */}
       <nav className="sidebar-nav">
-        <div className="nav-section-label">{!collapsed && 'Main Menu'}</div>
+        <div className="nav-section-label">{!collapsed && (t.mainMenu || 'Main Menu')}</div>
         {mainNavItems.map(item => {
           const Icon = item.icon
           const isActive = activeTab === item.id
@@ -97,7 +97,7 @@ export default function Sidebar({
         })}
 
         <div className="nav-divider" />
-        <div className="nav-section-label">{!collapsed && 'AI Tools'}</div>
+        <div className="nav-section-label">{!collapsed && (t.aiTools || 'AI Tools')}</div>
 
         {toolNavItems.map(item => {
           const Icon = item.icon
@@ -119,18 +119,18 @@ export default function Sidebar({
 
       {/* Sidebar Footer Actions */}
       <div className="sidebar-footer">
-        <button className="sidebar-nav-btn footer-btn" title={collapsed ? 'Help & Support' : undefined}>
+        <button className="sidebar-nav-btn footer-btn" title={collapsed ? (t.helpSupport || 'Help & Support') : undefined}>
           <HelpCircle size={18} className="sidebar-nav-icon" />
-          {!collapsed && <span className="sidebar-nav-label">Help & Support</span>}
+          {!collapsed && <span className="sidebar-nav-label">{t.helpSupport || 'Help & Support'}</span>}
         </button>
 
         <button 
           className="sidebar-collapse-btn"
           onClick={() => setCollapsed(!collapsed)}
-          title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          title={collapsed ? (t.expand || 'Expand Sidebar') : (t.collapse || 'Collapse Sidebar')}
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-          {!collapsed && <span>Collapse</span>}
+          {!collapsed && <span>{t.collapse || 'Collapse'}</span>}
         </button>
       </div>
     </aside>

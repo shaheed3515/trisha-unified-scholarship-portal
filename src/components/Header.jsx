@@ -120,7 +120,7 @@ export default function Header({
               onClick={() => { setShowMemberMenu(!showMemberMenu); setShowLangMenu(false); }}
             >
               <div className="mini-avatar">{activeStudent.avatarInitials}</div>
-              <span className="pill-label member-pill-name">{activeStudent.name}</span>
+              <span className="pill-label member-pill-name">{(lang === 'hi' && activeStudent.nameHi) ? activeStudent.nameHi : activeStudent.name}</span>
               <ChevronDown size={13} className={showMemberMenu ? 'arrow-flipped' : ''} />
             </button>
 
@@ -128,7 +128,7 @@ export default function Header({
               <div className="dropdown-panel member-panel fade-in">
                 <div className="panel-header">
                   <Users size={14} />
-                  <span>Switch Family Member</span>
+                  <span>{t.switchMember || 'Switch Family Member'}</span>
                   <span className="hh-id-badge">{household.householdId}</span>
                 </div>
                 {household.members.map(member => (
@@ -140,8 +140,8 @@ export default function Header({
                     <div className="member-opt-avatar">{member.avatarInitials}</div>
                     <div className="member-opt-info">
                       <div className="member-opt-name">
-                        {member.name}
-                        {member.isPrimary && <span className="primary-tag">Primary</span>}
+                        {(lang === 'hi' && member.nameHi) ? member.nameHi : member.name}
+                        {member.isPrimary && <span className="primary-tag">{lang === 'hi' ? 'प्राथमिक' : 'Primary'}</span>}
                       </div>
                       <div className="member-opt-inst">{member.institution}</div>
                     </div>

@@ -200,24 +200,27 @@ export default function App() {
           {activeTab === 'tracker' && (
             <ApplicationTracker
               activeStudent={activeStudent}
+              lang={lang}
               onResolveDeficiency={handleResolveDeficiency}
               onDownloadSlip={handleDownloadSlip}
             />
           )}
           {activeTab === 'documents' && (
-            <DocumentVault activeStudent={activeStudent} onToast={addToast} />
+            <DocumentVault activeStudent={activeStudent} lang={lang} onToast={addToast} />
           )}
           {activeTab === 'family' && (
             <FamilyOverview
               household={household}
               activeStudent={activeStudent}
-              onSelectStudent={(member) => { setActiveStudent(member); addToast(`Switched to ${member.name}`, 'info'); }}
+              lang={lang}
+              onSelectStudent={(member) => { setActiveStudent(member); addToast(lang === 'hi' ? `विद्यार्थी बदल गया: ${member.nameHi || member.name}` : `Switched to ${member.name}`, 'info'); }}
               onToast={addToast}
             />
           )}
           {activeTab === 'eligibility' && (
             <EligibilityFinder
               activeStudent={activeStudent}
+              lang={lang}
               onTriggerConflict={handleTriggerConflict}
               onNavigate={setActiveTab}
               onToast={addToast}
@@ -235,6 +238,7 @@ export default function App() {
           conflictData={conflictData}
           targetScheme={conflictTargetScheme}
           student={activeStudent}
+          lang={lang}
           onClose={() => { setConflictData(null); setConflictTargetScheme(null); }}
           onRelinquishAndProceed={handleRelinquishAndProceed}
         />

@@ -19,11 +19,12 @@ import {
   Microscope,
   Compass
 } from 'lucide-react'
-import { SCHEMES, CONFLICT_RULES } from '../data/scholarshipData'
+import { SCHEMES, CONFLICT_RULES, I18N } from '../data/scholarshipData'
 import './EligibilityFinder.css'
 
 export default function EligibilityFinder({ 
   activeStudent, 
+  lang,
   onTriggerConflict, 
   onNavigate,
   onToast 
@@ -33,6 +34,7 @@ export default function EligibilityFinder({
   const [instType, setInstType] = useState('premier')
   const [hasNetJrf, setHasNetJrf] = useState('none')
   const [studyAbroad, setStudyAbroad] = useState(false)
+  const t = I18N[lang] || I18N.en
 
   // Quick Preset Scenarios for Hackathon Demo
   const applyPreset = (type) => {
@@ -42,28 +44,28 @@ export default function EligibilityFinder({
       setInstType('premier')
       setHasNetJrf('none')
       setStudyAbroad(false)
-      onToast?.('Loaded Scenario: ST Student in Premier Institute (NIT/IIT)', 'info')
+      onToast?.(lang === 'hi' ? 'डेमो लोड: एनआईटी/आईआईटी संस्थान में एसटी छात्र' : 'Loaded Scenario: ST Student in Premier Institute (NIT/IIT)', 'info')
     } else if (type === 'phd') {
       setEduLevel('phd')
       setIncomeBand('below_6l')
       setInstType('central_univ')
       setHasNetJrf('jrf_qualified')
       setStudyAbroad(false)
-      onToast?.('Loaded Scenario: Research Scholar with UGC-NET JRF', 'info')
+      onToast?.(lang === 'hi' ? 'डेमो लोड: यूजीसी-नेट जेआरएफ शोधार्थी' : 'Loaded Scenario: Research Scholar with UGC-NET JRF', 'info')
     } else if (type === 'abroad') {
       setEduLevel('overseas')
       setIncomeBand('below_6l')
       setInstType('foreign')
       setHasNetJrf('none')
       setStudyAbroad(true)
-      onToast?.('Loaded Scenario: ST Student with Foreign University Offer', 'info')
+      onToast?.(lang === 'hi' ? 'डेमो लोड: विदेशी विश्वविद्यालय प्रवेश प्रस्ताव' : 'Loaded Scenario: ST Student with Foreign University Offer', 'info')
     } else if (type === 'school') {
       setEduLevel('school_9_10')
       setIncomeBand('below_2_5l')
       setInstType('school')
       setHasNetJrf('none')
       setStudyAbroad(false)
-      onToast?.('Loaded Scenario: High School Student (Class 9-10)', 'info')
+      onToast?.(lang === 'hi' ? 'डेमो लोड: उच्च माध्यमिक विद्यालय छात्र (कक्षा 9-10)' : 'Loaded Scenario: High School Student (Class 9-10)', 'info')
     }
   }
 
@@ -75,28 +77,28 @@ export default function EligibilityFinder({
 
     if (studyAbroad || eduLevel === 'overseas') {
       matchedSchemeId = 'nos'
-      reasons.push('Candidate pursuing Masters / Ph.D. abroad in QS World Ranked University.')
+      reasons.push(lang === 'hi' ? 'उम्मीदवार QS विश्व रैंकिंग विश्वविद्यालय में विदेश में मास्टर्स / पीएचडी कर रहे हैं।' : 'Candidate pursuing Masters / Ph.D. abroad in QS World Ranked University.')
       if (incomeBand === 'above_6l') {
-        warnings.push('Annual family income exceeds ₹6.00 Lakhs cap for MoTA Overseas grant.')
+        warnings.push(lang === 'hi' ? 'पारिवारिक वार्षिक आय MoTA विदेश अनुदान की ₹6.00 लाख सीमा से अधिक है।' : 'Annual family income exceeds ₹6.00 Lakhs cap for MoTA Overseas grant.')
       } else {
-        reasons.push('Family income within ₹6.00 Lakhs per annum limit.')
+        reasons.push(lang === 'hi' ? 'पारिवारिक आय ₹6.00 लाख प्रति वर्ष की सीमा के भीतर है।' : 'Family income within ₹6.00 Lakhs per annum limit.')
       }
     } else if (eduLevel === 'phd' || hasNetJrf === 'jrf_qualified') {
       matchedSchemeId = 'nfst'
-      reasons.push('Candidate enrolled in M.Phil / Ph.D. research programme with UGC-NET/JRF qualification.')
-      reasons.push('Direct stipend of ₹37,000/month (JRF) via Canara Bank SFMP.')
+      reasons.push(lang === 'hi' ? 'उम्मीदवार यूजीसी-नेट/जेआरएफ योग्यता के साथ एम.फिल/पीएचडी में नामांकित हैं।' : 'Candidate enrolled in M.Phil / Ph.D. research programme with UGC-NET/JRF qualification.')
+      reasons.push(lang === 'hi' ? 'केनरा बैंक SFMP के माध्यम से ₹37,000/माह (JRF) का सीधा वजीफा।' : 'Direct stipend of ₹37,000/month (JRF) via Canara Bank SFMP.')
     } else if (instType === 'premier' || eduLevel === 'ug_premier') {
       matchedSchemeId = 'top-class'
-      reasons.push('Enrolled in Notified Premier Institution (IIT, NIT, AIIMS, IIM, NLU).')
-      reasons.push('Covers full tuition + ₹2,000/month maintenance allowance + ₹45,000/yr books.')
+      reasons.push(lang === 'hi' ? 'अधिसूचित शीर्ष संस्थान (IIT, NIT, AIIMS, IIM, NLU) में अध्ययनरत।' : 'Enrolled in Notified Premier Institution (IIT, NIT, AIIMS, IIM, NLU).')
+      reasons.push(lang === 'hi' ? 'पूर्ण शिक्षण शुल्क + ₹2,000/माह निर्वाह भत्ता + ₹45,000 पुस्तकें/कंप्यूटर सहायता।' : 'Covers full tuition + ₹2,000/month maintenance allowance + ₹45,000/yr books.')
     } else if (eduLevel === 'school_9_10') {
       matchedSchemeId = 'pre-matric'
-      reasons.push('ST Student studying in Class 9 or 10 in recognized school/EMRS.')
-      reasons.push('Monthly maintenance of ₹150 - ₹750 + annual book grant.')
+      reasons.push(lang === 'hi' ? 'मान्यता प्राप्त स्कूल / EMRS में कक्षा 9 या 10 में अध्ययनरत एसटी छात्र।' : 'ST Student studying in Class 9 or 10 in recognized school/EMRS.')
+      reasons.push(lang === 'hi' ? '₹150 - ₹750/माह रखरखाव भत्ता + वार्षिक पुस्तक अनुदान।' : 'Monthly maintenance of ₹150 - ₹750 + annual book grant.')
     } else {
       matchedSchemeId = 'post-matric'
-      reasons.push('Pursuing post-matriculation study after Class 10 (Degree/Diploma/PG).')
-      reasons.push('Allowance of ₹230 - ₹1,200/month based on hostel/day-scholar status.')
+      reasons.push(lang === 'hi' ? 'कक्षा 10 के बाद पोस्ट-मैट्रिकोत्तर अध्ययन (डिग्री/डिप्लोमा/पीजी)।' : 'Pursuing post-matriculation study after Class 10 (Degree/Diploma/PG).')
+      reasons.push(lang === 'hi' ? 'छात्रावास/दिवस छात्र स्थिति के आधार पर ₹230 - ₹1,200/माह भत्ता।' : 'Allowance of ₹230 - ₹1,200/month based on hostel/day-scholar status.')
     }
 
     const scheme = SCHEMES.find(s => s.id === matchedSchemeId) || SCHEMES[1]
@@ -124,50 +126,50 @@ export default function EligibilityFinder({
       <section className="gov-card eligibility-hero-card">
         <div className="hero-top-row">
           <div className="badge-group">
-            <span className="badge badge-primary">MoTA Smart Rule Engine</span>
-            <span className="badge badge-warning">Problem Statement 26238</span>
+            <span className="badge badge-primary">{t.ruleEngineBadge || 'MoTA Smart Rule Engine'}</span>
+            <span className="badge badge-warning">{lang === 'hi' ? 'समस्या विवरण 26238' : 'Problem Statement 26238'}</span>
           </div>
           <button className="reset-btn" onClick={() => applyPreset('premier')}>
-            <RotateCcw size={14} /> Reset Filters
+            <RotateCcw size={14} /> {t.resetFilters || 'Reset Filters'}
           </button>
         </div>
 
         <h1 className="hero-heading">
           <Sparkles size={22} className="sparkle-icon" />
-          Smart Eligibility & One-Scholarship Conflict Engine
+          {t.engineHeroTitle || 'Smart Eligibility & One-Scholarship Conflict Engine'}
         </h1>
         
         <p className="hero-subtext">
-          Evaluate eligibility across all 5 MoTA scholarship schemes, compute maximum financial allowances, and ensure compliance with the <strong>One-Active-Scholarship Rule</strong>.
+          {t.engineHeroDesc || 'Evaluate eligibility across all 5 MoTA scholarship schemes, compute maximum financial allowances, and ensure compliance with the One-Active-Scholarship Rule.'}
         </p>
 
         {/* 1-Click Demo Scenarios */}
         <div className="preset-container">
-          <span className="preset-title"><Zap size={14} /> Quick Demo Scenarios:</span>
+          <span className="preset-title"><Zap size={14} /> {t.quickDemoScenarios || 'Quick Demo Scenarios:'}</span>
           <div className="preset-buttons">
             <button 
               className={`preset-btn ${eduLevel === 'ug_premier' && !studyAbroad ? 'active' : ''}`} 
               onClick={() => applyPreset('premier')}
             >
-              <GraduationCap size={14} /> NIT/IIT Student (Top Class)
+              <GraduationCap size={14} /> {t.demoPremier || 'NIT/IIT Student (Top Class)'}
             </button>
             <button 
               className={`preset-btn ${eduLevel === 'phd' ? 'active' : ''}`} 
               onClick={() => applyPreset('phd')}
             >
-              <Microscope size={14} /> Ph.D. Scholar (NFST)
+              <Microscope size={14} /> {t.demoPhd || 'Ph.D. Scholar (NFST)'}
             </button>
             <button 
               className={`preset-btn ${studyAbroad ? 'active' : ''}`} 
               onClick={() => applyPreset('abroad')}
             >
-              <Globe size={14} /> Study Abroad (NOS)
+              <Globe size={14} /> {t.demoAbroad || 'Study Abroad (NOS)'}
             </button>
             <button 
               className={`preset-btn ${eduLevel === 'school_9_10' ? 'active' : ''}`} 
               onClick={() => applyPreset('school')}
             >
-              <BookOpen size={14} /> Class 9–10 (Pre-Matric)
+              <BookOpen size={14} /> {t.demoSchool || 'Class 9–10 (Pre-Matric)'}
             </button>
           </div>
         </div>
@@ -178,15 +180,15 @@ export default function EligibilityFinder({
         {/* Left Column: Interactive Questions */}
         <div className="gov-card criteria-card">
           <div className="criteria-header">
-            <h2><FileText size={18} /> Student Eligibility Criteria</h2>
-            <span className="criteria-count">3 Evaluation Factors</span>
+            <h2><FileText size={18} /> {t.studentEligibilityCriteria || 'Student Eligibility Criteria'}</h2>
+            <span className="criteria-count">{t.evaluationFactors || '3 Evaluation Factors'}</span>
           </div>
 
           <form className="criteria-form" onSubmit={(e) => e.preventDefault()}>
             {/* Question 1: Education Level */}
             <div className="criteria-group">
               <label className="criteria-label">
-                1. Level of Study
+                {t.levelOfStudy || '1. Level of Study'}
                 <span className="req-star">*</span>
               </label>
               <div className="options-stack">
@@ -199,8 +201,8 @@ export default function EligibilityFinder({
                     onChange={() => { setEduLevel('school_9_10'); setStudyAbroad(false); }} 
                   />
                   <div className="option-info">
-                    <span className="option-title">Class 9 – 10 (Secondary School)</span>
-                    <span className="option-desc">EMRS, Govt or State-Recognized School</span>
+                    <span className="option-title">{t.optSchoolTitle || 'Class 9 – 10 (Secondary School)'}</span>
+                    <span className="option-desc">{t.optSchoolDesc || 'EMRS, Govt or State-Recognized School'}</span>
                   </div>
                 </label>
 
@@ -213,8 +215,8 @@ export default function EligibilityFinder({
                     onChange={() => { setEduLevel('ug_college'); setStudyAbroad(false); }} 
                   />
                   <div className="option-info">
-                    <span className="option-title">College / Degree / Diploma</span>
-                    <span className="option-desc">General Post-Matriculation Study after Class 10</span>
+                    <span className="option-title">{t.optCollegeTitle || 'College / Degree / Diploma'}</span>
+                    <span className="option-desc">{t.optCollegeDesc || 'General Post-Matriculation Study after Class 10'}</span>
                   </div>
                 </label>
 
@@ -227,8 +229,8 @@ export default function EligibilityFinder({
                     onChange={() => { setEduLevel('ug_premier'); setStudyAbroad(false); }} 
                   />
                   <div className="option-info">
-                    <span className="option-title">Premier Institute (IIT, NIT, AIIMS, IIM)</span>
-                    <span className="option-desc">Notified Top-Class Institutions across India</span>
+                    <span className="option-title">{t.optPremierTitle || 'Premier Institute (IIT, NIT, AIIMS, IIM)'}</span>
+                    <span className="option-desc">{t.optPremierDesc || 'Notified Top-Class Institutions across India'}</span>
                   </div>
                 </label>
 
@@ -241,8 +243,8 @@ export default function EligibilityFinder({
                     onChange={() => { setEduLevel('phd'); setStudyAbroad(false); }} 
                   />
                   <div className="option-info">
-                    <span className="option-title">M.Phil / Ph.D. Research</span>
-                    <span className="option-desc">Doctoral Research Fellowship Program</span>
+                    <span className="option-title">{t.optPhdTitle || 'M.Phil / Ph.D. Research'}</span>
+                    <span className="option-desc">{t.optPhdDesc || 'Doctoral Research Fellowship Program'}</span>
                   </div>
                 </label>
 
@@ -255,8 +257,8 @@ export default function EligibilityFinder({
                     onChange={() => { setEduLevel('overseas'); setStudyAbroad(true); }} 
                   />
                   <div className="option-info">
-                    <span className="option-title">Foreign / Overseas University</span>
-                    <span className="option-desc">Master's or Ph.D. abroad (QS Top 500 ranked)</span>
+                    <span className="option-title">{t.optOverseasTitle || 'Foreign / Overseas University'}</span>
+                    <span className="option-desc">{t.optOverseasDesc || "Master's or Ph.D. abroad (QS Top 500 ranked)"}</span>
                   </div>
                 </label>
               </div>
@@ -265,7 +267,7 @@ export default function EligibilityFinder({
             {/* Question 2: Family Income */}
             <div className="criteria-group">
               <label className="criteria-label">
-                2. Annual Family Parental Income
+                {t.annualFamilyIncome || '2. Annual Family Parental Income'}
                 <span className="req-star">*</span>
               </label>
               <div className="pill-group">
@@ -274,21 +276,21 @@ export default function EligibilityFinder({
                   className={`pill-option ${incomeBand === 'below_2_5l' ? 'selected' : ''}`}
                   onClick={() => setIncomeBand('below_2_5l')}
                 >
-                  Under ₹2.50 Lakhs / year <span className="pill-tag">Pre/Post & Top Class</span>
+                  {t.incomeBelow25L || 'Under ₹2.50 Lakhs / year'} <span className="pill-tag">{t.tagPrePostTop || 'Pre/Post & Top Class'}</span>
                 </button>
                 <button 
                   type="button"
                   className={`pill-option ${incomeBand === 'below_6l' ? 'selected' : ''}`}
                   onClick={() => setIncomeBand('below_6l')}
                 >
-                  ₹2.50 Lakhs – ₹6.00 Lakhs / year <span className="pill-tag">NOS Eligible</span>
+                  {t.income25Lto6L || '₹2.50 Lakhs – ₹6.00 Lakhs / year'} <span className="pill-tag">{t.tagNosEligible || 'NOS Eligible'}</span>
                 </button>
                 <button 
                   type="button"
                   className={`pill-option ${incomeBand === 'above_6l' ? 'selected' : ''}`}
                   onClick={() => setIncomeBand('above_6l')}
                 >
-                  Above ₹6.00 Lakhs / year
+                  {t.incomeAbove6L || 'Above ₹6.00 Lakhs / year'}
                 </button>
               </div>
             </div>
@@ -296,7 +298,7 @@ export default function EligibilityFinder({
             {/* Question 3: Competitive Exam */}
             <div className="criteria-group">
               <label className="criteria-label">
-                3. Qualifying Exam Status
+                {t.qualifyingExamStatus || '3. Qualifying Exam Status'}
               </label>
               <div className="pill-group">
                 <button 
@@ -304,14 +306,14 @@ export default function EligibilityFinder({
                   className={`pill-option ${hasNetJrf === 'none' ? 'selected' : ''}`}
                   onClick={() => setHasNetJrf('none')}
                 >
-                  Standard Institutional Merit / Entrance
+                  {t.examStandard || 'Standard Institutional Merit / Entrance'}
                 </button>
                 <button 
                   type="button"
                   className={`pill-option ${hasNetJrf === 'jrf_qualified' ? 'selected' : ''}`}
                   onClick={() => { setHasNetJrf('jrf_qualified'); setEduLevel('phd'); }}
                 >
-                  UGC-NET / CSIR-NET (JRF Qualified)
+                  {t.examJrf || 'UGC-NET / CSIR-NET (JRF Qualified)'}
                 </button>
               </div>
             </div>
@@ -324,10 +326,10 @@ export default function EligibilityFinder({
           <div className="gov-card result-card">
             <div className="result-tags-row">
               <span className="badge badge-success">
-                <CheckCircle2 size={13} /> Recommended Scheme
+                <CheckCircle2 size={13} /> {t.recommendedSchemeBadge || 'Recommended Scheme'}
               </span>
               <span className="badge badge-neutral">
-                Source Portal: {verdict.scheme.portal}
+                {t.sourcePortal || 'Source Portal:'} {verdict.scheme.portal}
               </span>
             </div>
 
@@ -336,19 +338,21 @@ export default function EligibilityFinder({
                 <Award size={28} className="award-icon" />
               </div>
               <div className="result-title-group">
-                <h3 className="result-name">{verdict.scheme.name}</h3>
-                <span className="result-name-hi">{verdict.scheme.nameHi}</span>
+                <h3 className="result-name">{(lang === 'hi' && verdict.scheme.nameHi) ? verdict.scheme.nameHi : verdict.scheme.name}</h3>
+                {lang !== 'hi' && verdict.scheme.nameHi && (
+                  <span className="result-name-hi">{verdict.scheme.nameHi}</span>
+                )}
               </div>
             </div>
 
             <div className="entitlement-box">
-              <div className="entitlement-tag">Estimated Financial Entitlement</div>
+              <div className="entitlement-tag">{t.estimatedFinancialEntitlement || 'Estimated Financial Entitlement'}</div>
               <div className="entitlement-val">{verdict.scheme.amountRange}</div>
               <div className="entitlement-note">{verdict.scheme.description}</div>
             </div>
 
             <div className="analysis-section">
-              <h4 className="analysis-title">Rule Engine Assessment:</h4>
+              <h4 className="analysis-title">{t.ruleEngineAssessment || 'Rule Engine Assessment:'}</h4>
               <ul className="analysis-list">
                 {verdict.reasons.map((r, i) => (
                   <li key={i}>
@@ -364,18 +368,27 @@ export default function EligibilityFinder({
               <div className="conflict-box">
                 <div className="conflict-header">
                   <AlertTriangle size={18} className="conflict-icon" />
-                  <span>MoTA One-Active-Scholarship Rule Conflict</span>
+                  <span>{t.conflictAlertTitle || 'MoTA One-Active-Scholarship Rule Conflict'}</span>
                 </div>
                 <p className="conflict-body">
-                  Student <strong>{activeStudent?.name}</strong> currently holds an active grant for{' '}
-                  <strong>{verdict.activeSchemeObj?.name}</strong> (App ID: {verdict.activeApp?.id}). 
-                  MoTA guidelines prohibit simultaneous active scholarships.
+                  {lang === 'hi' ? (
+                    <>
+                      छात्र <strong>{activeStudent?.nameHi || activeStudent?.name}</strong> वर्तमान में{' '}
+                      <strong>{verdict.activeSchemeObj?.nameHi || verdict.activeSchemeObj?.name}</strong> (आवेदन सं: {verdict.activeApp?.id}) का लाभ प्राप्त कर रहे हैं। MoTA दिशा-निर्देश समवर्ती छात्रवृत्ति की अनुमति नहीं देते।
+                    </>
+                  ) : (
+                    <>
+                      Student <strong>{activeStudent?.name}</strong> currently holds an active grant for{' '}
+                      <strong>{verdict.activeSchemeObj?.name}</strong> (App ID: {verdict.activeApp?.id}). 
+                      MoTA guidelines prohibit simultaneous active scholarships.
+                    </>
+                  )}
                 </p>
                 <button 
                   className="btn btn-warning btn-sm conflict-btn"
                   onClick={() => onTriggerConflict(verdict.scheme.id)}
                 >
-                  <span>Open Automated NOC & Switch Wizard</span>
+                  <span>{t.openNocSwitchWizard || 'Open Automated NOC & Switch Wizard'}</span>
                   <ArrowRight size={14} />
                 </button>
               </div>
@@ -384,7 +397,7 @@ export default function EligibilityFinder({
             {!verdict.hasActiveConflict && (
               <div className="no-conflict-badge">
                 <ShieldCheck size={18} className="shield-icon" />
-                <span>Zero Conflict: Student is clear to apply with no active overlapping grants.</span>
+                <span>{t.zeroConflictNotice || 'Zero Conflict: Student is clear to apply with no active overlapping grants.'}</span>
               </div>
             )}
 
@@ -394,7 +407,7 @@ export default function EligibilityFinder({
                 className="btn btn-primary btn-full"
                 onClick={() => onTriggerConflict(verdict.scheme.id)}
               >
-                <span>Apply with DigiLocker Pre-filled Data</span>
+                <span>{t.applyDigilockerPrefilled || 'Apply with DigiLocker Pre-filled Data'}</span>
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -403,16 +416,16 @@ export default function EligibilityFinder({
           {/* Verification Readiness Wallet */}
           <div className="gov-card readiness-card">
             <h4 className="readiness-title">
-              <ShieldCheck size={16} /> DigiLocker & APAAR Wallet Readiness
+              <ShieldCheck size={16} /> {t.readinessTitle || 'DigiLocker & APAAR Wallet Readiness'}
             </h4>
             <p className="readiness-text">
-              Verified digital credentials stored in TRISHA will be automatically linked to this application:
+              {t.readinessDesc || 'Verified digital credentials stored in TRISHA will be automatically linked to this application:'}
             </p>
             <div className="readiness-grid">
-              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> Aadhaar (UIDAI e-KYC)</div>
-              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> ST Certificate (e-District)</div>
-              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> APAAR Academic Record</div>
-              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> Bank Account (PFMS DBT)</div>
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> {t.aadhaarKyc || 'Aadhaar (UIDAI e-KYC)'}</div>
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> {t.stCertDoc || 'ST Certificate (e-District)'}</div>
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> {t.apaarRecord || 'APAAR Academic Record'}</div>
+              <div className="readiness-item"><CheckCircle2 size={13} className="item-chk" /> {t.bankAccountDbt || 'Bank Account (PFMS DBT)'}</div>
             </div>
           </div>
         </div>
@@ -420,3 +433,4 @@ export default function EligibilityFinder({
     </div>
   )
 }
+
