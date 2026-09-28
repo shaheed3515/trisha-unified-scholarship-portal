@@ -16,6 +16,7 @@ import {
   Award
 } from 'lucide-react'
 import { SCHEMES, I18N } from '../data/scholarshipData'
+import { getLocalizedSchemes } from '../data/localizationEngine'
 import './Dashboard.css'
 
 export default function Dashboard({ 
@@ -27,6 +28,7 @@ export default function Dashboard({
   onResolveDeficiency 
 }) {
   const t = I18N[lang] || I18N.en
+  const localizedSchemes = getLocalizedSchemes(SCHEMES, lang)
 
   const applications = activeStudent.applications || []
   const activeCount = applications.filter(a => a.status === 'disbursed' || a.status === 'in_progress').length
@@ -90,7 +92,7 @@ export default function Dashboard({
             </div>
 
             <h1 className="hero-student-name">
-              {lang === 'hi' && activeStudent.nameHi ? activeStudent.nameHi : activeStudent.name}
+              {activeStudent.name}
             </h1>
 
             <p className="hero-student-institution">
@@ -135,8 +137,8 @@ export default function Dashboard({
               <span className="badge badge-warning">{t.actionRequiredBadge}</span>
               <span className="def-app-code">{actionRequiredApp.id} ({actionRequiredApp.portal})</span>
             </div>
-            <div className="def-title">{lang === 'hi' ? t.incomeCertRequired : (actionRequiredApp.deficiencies[0]?.title || t.incomeCertRequired)}</div>
-            <div className="def-detail">{lang === 'hi' ? t.deficiencyDetail : (actionRequiredApp.deficiencies[0]?.detail || t.deficiencyDetail)}</div>
+            <div className="def-title">{actionRequiredApp.deficiencies[0]?.title || t.incomeCertRequired}</div>
+            <div className="def-detail">{actionRequiredApp.deficiencies[0]?.detail || t.deficiencyDetail}</div>
           </div>
           <button 
             className="btn btn-warning def-action-btn"
@@ -206,7 +208,7 @@ export default function Dashboard({
 
         <div className="applications-stack">
           {applications.map(app => {
-            const schemeMeta = SCHEMES.find(s => s.id === app.schemeId) || {}
+            const schemeMeta = localizedSchemes.find(s => s.id === app.schemeId) || {}
             return (
               <div key={app.id} className="gov-card app-portfolio-card">
                 <div className="app-card-header">
@@ -216,14 +218,14 @@ export default function Dashboard({
                       <span className="badge badge-neutral">{t.session} {app.academicSession}</span>
                       <span className="app-id-text">{t.ref} {app.id}</span>
                     </div>
-                    <h3 className="app-scheme-title">{(lang === 'hi' && schemeMeta.nameHi) ? schemeMeta.nameHi : (schemeMeta.name || app.schemeId)}</h3>
+                    <h3 className="app-scheme-title">{schemeMeta.name || app.schemeId}</h3>
                     <div className="app-sub-text">{schemeMeta.portalFullName}</div>
                   </div>
 
                   <div className="app-status-badge-wrap">
                     <span className={`badge ${app.status === 'disbursed' ? 'badge-success' : app.status === 'action_required' ? 'badge-warning' : 'badge-primary'}`}>
                       {app.status === 'disbursed' ? <CheckCircle2 size={13} /> : <Clock size={13} />}
-                      {lang === 'hi' ? (app.status === 'disbursed' ? 'छात्र बैंक खाते में डीबीटी राशि जमा' : app.statusText) : app.statusText}
+                      {app.statusText}
                     </span>
                     <div className="sanction-amount-pill">{app.sanctionAmount}</div>
                   </div>

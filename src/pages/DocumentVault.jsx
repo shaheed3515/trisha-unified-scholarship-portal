@@ -13,6 +13,7 @@ import {
   X
 } from 'lucide-react'
 import { DIGILOCKER_VAULT, I18N } from '../data/scholarshipData'
+import { getLocalizedVault } from '../data/localizationEngine'
 import './DocumentVault.css'
 
 export default function DocumentVault({ activeStudent, lang, onToast }) {
@@ -20,13 +21,14 @@ export default function DocumentVault({ activeStudent, lang, onToast }) {
   const [selectedDoc, setSelectedDoc] = useState(null)
   const t = I18N[lang] || I18N.en
 
-  const studentDisplayName = (lang === 'hi' && activeStudent.nameHi) ? activeStudent.nameHi : activeStudent.name
+  const localizedVault = getLocalizedVault(DIGILOCKER_VAULT, lang)
+  const studentDisplayName = activeStudent.name
 
   const handleSyncDigiLocker = () => {
     setSyncing(true)
     setTimeout(() => {
       setSyncing(false)
-      onToast('DigiLocker Records re-synced and digitally verified with Jharkhand e-District & UIDAI!', 'success')
+      onToast('DigiLocker Records re-synced and digitally verified with State e-District & UIDAI!', 'success')
     }, 1500)
   }
 
@@ -58,7 +60,7 @@ export default function DocumentVault({ activeStudent, lang, onToast }) {
 
       {/* Grid of Verified Documents */}
       <div className="vault-cards-grid">
-        {DIGILOCKER_VAULT.map(doc => (
+        {localizedVault.map(doc => (
           <div key={doc.id} className="gov-card doc-vault-card">
             <div className="doc-card-top">
               <div className="doc-icon-wrap">

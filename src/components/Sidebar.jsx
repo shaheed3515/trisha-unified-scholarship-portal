@@ -70,8 +70,8 @@ export default function Sidebar({
         <div className="sidebar-student-card">
           <div className="sidebar-avatar">{activeStudent.avatarInitials}</div>
           <div className="sidebar-student-info">
-            <div className="sidebar-student-name">{(lang === 'hi' && activeStudent.nameHi) ? activeStudent.nameHi : activeStudent.name}</div>
-            <div className="sidebar-student-level">{lang === 'hi' ? 'स्नातक (कॉलेज)' : activeStudent.educationLevel}</div>
+            <div className="sidebar-student-name">{activeStudent.name}</div>
+            <div className="sidebar-student-level">{activeStudent.educationLevel}</div>
           </div>
         </div>
       )}

@@ -13,6 +13,11 @@ import GrievanceAssistant from './pages/GrievanceAssistant'
 import EligibilityFinder from './pages/EligibilityFinder'
 import { HOUSEHOLD_DATA, SCHEMES, CONFLICT_RULES, I18N } from './data/scholarshipData'
 import { 
+  getLocalizedStudent, 
+  getLocalizedHousehold, 
+  getLocalizedNotifications 
+} from './data/localizationEngine'
+import { 
   CheckCircle2, 
   AlertTriangle, 
   Info, 
@@ -22,16 +27,6 @@ import {
   ShieldCheck
 } from 'lucide-react'
 import './App.css'
-
-const TAB_LABELS = {
-  dashboard: 'Dashboard',
-  schemes: 'All Scholarship Schemes',
-  tracker: 'Application & Verification Tracker',
-  documents: 'DigiLocker Document Vault',
-  family: 'Household & Sibling View',
-  eligibility: 'Smart Eligibility & Conflict Engine',
-  assistant: 'Tribal AI Sahayak'
-}
 
 export default function App() {
   const [household, setHousehold] = useState(HOUSEHOLD_DATA)
@@ -45,11 +40,9 @@ export default function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [showNotificationsDrawer, setShowNotificationsDrawer] = useState(false)
 
-  const [notifications, setNotifications] = useState([
-    { id: 'n1', title: 'PFMS DBT Remittance Released', body: 'Post-Matric ST allowance ₹18,500 credited to SBI account (UTR: RBI2026091298412).', time: '12 Sep 2026', read: false, type: 'success' },
-    { id: 'n2', title: 'Action Required: Income Certificate', body: 'State Nodal Officer flagged income certificate format for Top Class application.', time: '20 Sep 2026', read: false, type: 'warning' },
-    { id: 'n3', title: 'National Overseas Scholarship Notice', body: 'Round 2 Overseas Scholarship applications open for QS Top 500 universities.', time: '18 Sep 2026', read: true, type: 'info' },
-  ])
+  const notifications = getLocalizedNotifications(lang)
+  const localizedActiveStudent = getLocalizedStudent(activeStudent, lang)
+  const localizedHousehold = getLocalizedHousehold(household, lang)
 
   const addToast = (message, type = 'info') => {
     const id = Date.now() + Math.random()
@@ -64,7 +57,7 @@ export default function App() {
       setConflictTargetScheme(targetScheme)
       setConflictData(auditResult)
     } else {
-      addToast(`Eligibility verified for ${targetScheme.name}. You may proceed!`, 'success')
+      addToast(t.eligibilityConfirmed || `Eligibility verified for ${targetScheme.name}. You may proceed!`, 'success')
       setActiveTab('tracker')
     }
   }
@@ -98,12 +91,12 @@ export default function App() {
     setActiveStudent(prev => ({ ...prev, applications: [newApp, ...prev.applications] }))
     setConflictData(null)
     setConflictTargetScheme(null)
-    addToast(`Provisional application ${newApp.id} for ${conflictTargetScheme.name} submitted with Automated NOC!`, 'success')
+    addToast(`${newApp.id} submitted with Automated NOC!`, 'success')
     setActiveTab('tracker')
   }
 
   const handleResolveDeficiency = (appId) => {
-    addToast('Contacting State Nodal Verification Server...', 'info')
+    addToast(t.fetchingDigilocker || 'Contacting State Nodal Verification Server...', 'info')
     setTimeout(() => {
       const resolveInApps = (apps) => apps.map(app => app.id === appId ? {
         ...app,
@@ -114,18 +107,18 @@ export default function App() {
       } : app)
       setHousehold(prev => ({ ...prev, members: prev.members.map(m => m.id === activeStudent.id ? { ...m, applications: resolveInApps(m.applications) } : m) }))
       setActiveStudent(prev => ({ ...prev, applications: resolveInApps(prev.applications) }))
-      addToast('Deficiency resolved! Income certificate e-verified via DigiLocker.', 'success')
+      addToast(t.lifetimeValid || 'Deficiency resolved! Income certificate e-verified via DigiLocker.', 'success')
     }, 1200)
   }
 
   const handleDownloadSlip = () => {
-    addToast('Generating certified PFMS DBT statement (PDF)...', 'info')
-    setTimeout(() => addToast('PFMS Receipt saved to Downloads.', 'success'), 1200)
+    addToast(t.downloading || 'Generating certified PFMS DBT statement (PDF)...', 'info')
+    setTimeout(() => addToast(t.allRecordsSecured || 'PFMS Receipt saved to Downloads.', 'success'), 1200)
   }
 
   const handleOfflineSync = () => {
-    addToast('Synchronizing offline queue with MoTA Central Cluster...', 'info')
-    setTimeout(() => { setOfflineMode(false); addToast('Offline sync complete! Records reconciled.', 'success'); }, 1400)
+    addToast(t.offlineActiveMsg || 'Synchronizing offline queue with MoTA Central Cluster...', 'info')
+    setTimeout(() => { setOfflineMode(false); addToast(t.lifetimeValid || 'Offline sync complete! Records reconciled.', 'success'); }, 1400)
   }
 
   const deficiencyCount = activeStudent.applications?.reduce((acc, a) => acc + (a.deficiencies?.length || 0), 0) || 0
@@ -152,7 +145,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         lang={lang}
         deficiencyCount={deficiencyCount}
-        activeStudent={activeStudent}
+        activeStudent={localizedActiveStudent}
         collapsed={sidebarCollapsed}
         setCollapsed={setSidebarCollapsed}
       />
@@ -163,9 +156,12 @@ export default function App() {
         <Header
           lang={lang}
           setLang={setLang}
-          activeStudent={activeStudent}
-          setActiveStudent={setActiveStudent}
-          household={household}
+          activeStudent={localizedActiveStudent}
+          setActiveStudent={(member) => {
+            const raw = household.members.find(m => m.id === member.id) || member
+            setActiveStudent(raw)
+          }}
+          household={localizedHousehold}
           offlineMode={offlineMode}
           setOfflineMode={setOfflineMode}
           notifications={notifications}
@@ -181,8 +177,8 @@ export default function App() {
         <main className="page-viewport">
           {activeTab === 'dashboard' && (
             <Dashboard
-              activeStudent={activeStudent}
-              household={household}
+              activeStudent={localizedActiveStudent}
+              household={localizedHousehold}
               lang={lang}
               onNavigate={setActiveTab}
               onTriggerConflict={handleTriggerConflict}
@@ -191,7 +187,7 @@ export default function App() {
           )}
           {activeTab === 'schemes' && (
             <SchemesPage
-              activeStudent={activeStudent}
+              activeStudent={localizedActiveStudent}
               lang={lang}
               onTriggerConflict={handleTriggerConflict}
               onDirectApply={(scheme) => handleTriggerConflict(scheme.id)}
@@ -199,27 +195,31 @@ export default function App() {
           )}
           {activeTab === 'tracker' && (
             <ApplicationTracker
-              activeStudent={activeStudent}
+              activeStudent={localizedActiveStudent}
               lang={lang}
               onResolveDeficiency={handleResolveDeficiency}
               onDownloadSlip={handleDownloadSlip}
             />
           )}
           {activeTab === 'documents' && (
-            <DocumentVault activeStudent={activeStudent} lang={lang} onToast={addToast} />
+            <DocumentVault activeStudent={localizedActiveStudent} lang={lang} onToast={addToast} />
           )}
           {activeTab === 'family' && (
             <FamilyOverview
-              household={household}
-              activeStudent={activeStudent}
+              household={localizedHousehold}
+              activeStudent={localizedActiveStudent}
               lang={lang}
-              onSelectStudent={(member) => { setActiveStudent(member); addToast(lang === 'hi' ? `विद्यार्थी बदल गया: ${member.nameHi || member.name}` : `Switched to ${member.name}`, 'info'); }}
+              onSelectStudent={(member) => { 
+                const raw = household.members.find(m => m.id === member.id) || member
+                setActiveStudent(raw)
+                addToast(member.name, 'info')
+              }}
               onToast={addToast}
             />
           )}
           {activeTab === 'eligibility' && (
             <EligibilityFinder
-              activeStudent={activeStudent}
+              activeStudent={localizedActiveStudent}
               lang={lang}
               onTriggerConflict={handleTriggerConflict}
               onNavigate={setActiveTab}
@@ -227,7 +227,7 @@ export default function App() {
             />
           )}
           {activeTab === 'assistant' && (
-            <GrievanceAssistant activeStudent={activeStudent} lang={lang} setLang={setLang} onToast={addToast} />
+            <GrievanceAssistant activeStudent={localizedActiveStudent} lang={lang} setLang={setLang} onToast={addToast} />
           )}
         </main>
       </div>
@@ -237,7 +237,7 @@ export default function App() {
         <ConflictModal
           conflictData={conflictData}
           targetScheme={conflictTargetScheme}
-          student={activeStudent}
+          student={localizedActiveStudent}
           lang={lang}
           onClose={() => { setConflictData(null); setConflictTargetScheme(null); }}
           onRelinquishAndProceed={handleRelinquishAndProceed}
@@ -251,7 +251,7 @@ export default function App() {
             <div className="drawer-header">
               <div className="drawer-title-row">
                 <Bell size={18} />
-                <h2>MoTA Notifications</h2>
+                <h2>{t.ministry || 'MoTA Notifications'}</h2>
               </div>
               <button className="close-btn" onClick={() => setShowNotificationsDrawer(false)}>
                 <X size={18} />
@@ -270,9 +270,9 @@ export default function App() {
             </div>
             <button
               className="btn btn-secondary btn-full"
-              onClick={() => { setNotifications(prev => prev.map(n => ({ ...n, read: true }))); setShowNotificationsDrawer(false); addToast('All read', 'info'); }}
+              onClick={() => { setShowNotificationsDrawer(false); addToast(t.lifetimeValid || 'All read', 'info'); }}
             >
-              Mark All as Read
+              {t.verifiedDoc || 'Mark All as Read'}
             </button>
           </div>
         </div>

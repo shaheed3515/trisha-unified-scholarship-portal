@@ -13,6 +13,7 @@ import {
   ChevronRight
 } from 'lucide-react'
 import { SCHEMES, I18N } from '../data/scholarshipData'
+import { getLocalizedSchemes } from '../data/localizationEngine'
 import './ApplicationTracker.css'
 
 export default function ApplicationTracker({ 
@@ -22,13 +23,14 @@ export default function ApplicationTracker({
   onDownloadSlip 
 }) {
   const t = I18N[lang] || I18N.en
+  const localizedSchemes = getLocalizedSchemes(SCHEMES, lang)
   const applications = activeStudent.applications || []
   const [selectedAppId, setSelectedAppId] = useState(applications[0]?.id || null)
 
   const selectedApp = applications.find(a => a.id === selectedAppId) || applications[0]
-  const schemeMeta = SCHEMES.find(s => s.id === selectedApp?.schemeId) || {}
+  const schemeMeta = localizedSchemes.find(s => s.id === selectedApp?.schemeId) || {}
 
-  const studentDisplayName = (lang === 'hi' && activeStudent.nameHi) ? activeStudent.nameHi : activeStudent.name
+  const studentDisplayName = activeStudent.name
 
   if (!selectedApp) {
     return (
@@ -74,12 +76,12 @@ export default function ApplicationTracker({
             <div className="timeline-header-row">
               <div>
                 <span className="badge badge-primary">{selectedApp.portal}</span>
-                <h2 className="timeline-scheme-title">{(lang === 'hi' && schemeMeta.nameHi) ? schemeMeta.nameHi : (schemeMeta.name || selectedApp.schemeId)}</h2>
+                <h2 className="timeline-scheme-title">{schemeMeta.name || selectedApp.schemeId}</h2>
                 <div className="app-meta-code">{t.appId || 'Application ID:'} <strong>{selectedApp.id}</strong> ({t.session || 'Session'} {selectedApp.academicSession})</div>
               </div>
               <div className="timeline-status-tag">
                 <span className={`badge ${selectedApp.status === 'disbursed' ? 'badge-success' : 'badge-warning'}`}>
-                  {lang === 'hi' ? (selectedApp.status === 'disbursed' ? 'छात्र बैंक खाते में डीबीटी राशि जमा' : selectedApp.statusText) : selectedApp.statusText}
+                  {selectedApp.statusText}
                 </span>
               </div>
             </div>

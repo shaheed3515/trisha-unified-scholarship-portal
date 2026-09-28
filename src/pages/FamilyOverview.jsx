@@ -13,6 +13,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import { SCHEMES, I18N } from '../data/scholarshipData'
+import { getLocalizedSchemes } from '../data/localizationEngine'
 import './FamilyOverview.css'
 
 export default function FamilyOverview({ 
@@ -26,6 +27,7 @@ export default function FamilyOverview({
   const [newChildName, setNewChildName] = useState('')
   const [newChildClass, setNewChildClass] = useState('Class IX (EMRS School)')
   const t = I18N[lang] || I18N.en
+  const localizedSchemes = getLocalizedSchemes(SCHEMES, lang)
 
   const handleAddMember = (e) => {
     e.preventDefault()
@@ -87,8 +89,8 @@ export default function FamilyOverview({
           {household.members.map(member => {
             const isCurrentlySelected = member.id === activeStudent.id
             const activeApp = member.applications?.[0]
-            const activeSchemeMeta = SCHEMES.find(s => s.id === activeApp?.schemeId)
-            const memberDisplayName = (lang === 'hi' && member.nameHi) ? member.nameHi : member.name
+            const activeSchemeMeta = localizedSchemes.find(s => s.id === activeApp?.schemeId)
+            const memberDisplayName = member.name
 
             return (
               <div 
@@ -118,10 +120,10 @@ export default function FamilyOverview({
                         <span className="badge badge-neutral">{activeApp.portal}</span>
                         <span className={`badge ${activeApp.status === 'disbursed' ? 'badge-success' : 'badge-warning'}`}>
                           {activeApp.status === 'disbursed' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
-                          {lang === 'hi' ? (activeApp.status === 'disbursed' ? 'छात्र बैंक खाते में डीबीटी राशि जमा' : activeApp.statusText) : activeApp.statusText}
+                          {activeApp.statusText}
                         </span>
                       </div>
-                      <div className="child-scheme-title">{(lang === 'hi' && activeSchemeMeta?.nameHi) ? activeSchemeMeta.nameHi : (activeSchemeMeta?.name || activeApp.schemeId)}</div>
+                      <div className="child-scheme-title">{activeSchemeMeta?.name || activeApp.schemeId}</div>
                       <div className="child-dbt-amount">
                         {t.disbursedAmount || 'Sanctioned:'} <strong>{activeApp.sanctionAmount}</strong>
                       </div>
