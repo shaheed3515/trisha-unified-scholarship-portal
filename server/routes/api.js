@@ -263,9 +263,10 @@ router.post('/chat', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Query message is required.' })
     }
 
-    const apiKey = process.env.GEMINI_API_KEY
+    const headerKey = req.headers['x-gemini-key']
+    const apiKey = (req.body.clientApiKey || headerKey || process.env.GEMINI_API_KEY || '').trim()
     if (!apiKey) {
-      return res.status(500).json({ success: false, error: 'GEMINI_API_KEY is not configured.' })
+      return res.status(400).json({ success: false, error: 'GEMINI_API_KEY is not configured.' })
     }
 
     // Pull student demographic context if provided
