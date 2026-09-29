@@ -15,6 +15,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import { SCHEMES, CONFLICT_RULES, I18N } from '../data/scholarshipData'
+import { getLocalizedSchemes } from '../data/localizationEngine'
 import './SchemesPage.css'
 
 export default function SchemesPage({ 
@@ -27,8 +28,9 @@ export default function SchemesPage({
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedSchemeId, setExpandedSchemeId] = useState(null)
   const t = I18N[lang] || I18N.en
+  const localizedSchemes = getLocalizedSchemes(SCHEMES, lang)
 
-  const filteredSchemes = SCHEMES.filter(scheme => {
+  const filteredSchemes = localizedSchemes.filter(scheme => {
     const matchesPortal = filterPortal === 'ALL' || scheme.portal.includes(filterPortal)
     const matchesQuery = 
       scheme.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -123,7 +125,7 @@ export default function SchemesPage({
                       </span>
                     )}
                   </div>
-                  <h2 className="scheme-name">{(lang === 'hi' && scheme.nameHi) ? scheme.nameHi : scheme.name}</h2>
+                  <h2 className="scheme-name">{scheme.name}</h2>
                   <p className="scheme-desc">{scheme.description}</p>
                 </div>
 
