@@ -26,7 +26,7 @@
 * 🌐 **Live Deployed Prototype:** [https://sih26238-omega.vercel.app](https://sih26238-omega.vercel.app)
 * 💻 **GitHub Repository:** [https://github.com/shaheed3515/trisha-unified-scholarship-portal](https://github.com/shaheed3515/trisha-unified-scholarship-portal)
 * 📄 **Executive Project Report:** [PROJECT_REPORT.md](./PROJECT_REPORT.md)
-* 🎥 **Video Walkthrough:** [YouTube Demonstration](https://youtu.be/your-video-id) *(Update with your video link)*
+* 🎥 **Video Walkthrough:** [YouTube Demonstration](https://youtu.be/Ja_54hBjBbQ)
 
 ---
 
