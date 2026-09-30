@@ -97,8 +97,6 @@ The **Ministry of Tribal Affairs (MoTA)** administers five flagship scholarship 
 
 ## 🏗️ Technical Approach & Workflow
 
-![TRISHA Technical Approach](./TECHNICAL_APPROACH_SLIDE_3.png)
-
 ```
 [ ST Scholar Login ] (APAAR / Aadhaar SSO)
         │

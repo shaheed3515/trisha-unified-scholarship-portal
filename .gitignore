@@ -29,3 +29,12 @@ trisha.db-shm
 .vercel
 DEPLOYMENT.md
 *deployment*.md
+
+# Presentation and pitch scripts
+*.pptx
+TECHNICAL_APPROACH*
+TRISHA_TECH*
+TRISHA_SIH*
+WALKTHROUGH_SCRIPT*
+generate_*.py
+
