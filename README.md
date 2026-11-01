@@ -226,5 +226,5 @@ The frontend will run at `http://localhost:5173` and the API server at `http://l
 ---
 
 <p align="center">
-  <em>Built with ❤️ by Team Codophiles for Smart India Hackathon 2026. Empowering tribal scholars across Bharat.</em>
+  <em>Built with ❤️ by Team Codophiles for Smart India Hackathon 2026. Empowering tribal scholars across India.</em>
 </p>
